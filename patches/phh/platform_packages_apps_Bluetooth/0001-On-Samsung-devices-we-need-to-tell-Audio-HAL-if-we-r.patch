@@ -1,0 +1,25 @@
+From a1f3e0229c1043205ddf995e534e783c75027a75 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 7 Jun 2021 13:23:02 -0400
+Subject: [PATCH] On Samsung devices, we need to tell Audio HAL if we're
+ running narrow band or wide band
+
+Change-Id: Ibfa0f632d9acbb920a85a613ce4e2f1d26556bd1
+---
+ res/values/config.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 42ecca47f..952b96510 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -136,5 +136,5 @@
+     <bool name="enable_gd_up_to_scanning_layer">false</bool>
+
+     <!-- If true, SCO sample rate will be reported via g_sco_samplerate audio parameter -->
+-    <bool name="sco_report_samplerate">false</bool>
++    <bool name="sco_report_samplerate">true</bool>
+ </resources>
+-- 
+2.25.1
+

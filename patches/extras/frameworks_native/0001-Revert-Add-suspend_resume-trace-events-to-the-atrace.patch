@@ -1,0 +1,42 @@
+From 21961afe4adcc0e4d56420afaa28ded058178436 Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Sun, 8 Aug 2021 01:43:40 +0000
+Subject: [PATCH] Revert "Add suspend_resume trace events to the atrace 'freq'
+ category."
+
+This reverts commit 581c22f979af05e48ad4843cdfa9605186d286da.
+
+Change-Id: I48895242e8567e91418c61d67a51de2b42f1008b
+---
+ cmds/atrace/atrace.cpp | 1 -
+ cmds/atrace/atrace.rc  | 2 --
+ 2 files changed, 3 deletions(-)
+
+diff --git a/cmds/atrace/atrace.cpp b/cmds/atrace/atrace.cpp
+index 783a475829..8feba981da 100644
+--- a/cmds/atrace/atrace.cpp
++++ b/cmds/atrace/atrace.cpp
+@@ -173,7 +173,6 @@ static const TracingCategory k_categories[] = {
+         { OPT,      "events/clk/clk_disable/enable" },
+         { OPT,      "events/clk/clk_enable/enable" },
+         { OPT,      "events/power/cpu_frequency_limits/enable" },
+-        { OPT,      "events/power/suspend_resume/enable" },
+         { OPT,      "events/cpuhp/cpuhp_enter/enable" },
+         { OPT,      "events/cpuhp/cpuhp_exit/enable" },
+         { OPT,      "events/cpuhp/cpuhp_pause/enable" },
+diff --git a/cmds/atrace/atrace.rc b/cmds/atrace/atrace.rc
+index e3c4edebbd..94e4796f45 100644
+--- a/cmds/atrace/atrace.rc
++++ b/cmds/atrace/atrace.rc
+@@ -61,8 +61,6 @@ on late-init
+     chmod 0666 /sys/kernel/tracing/events/cpuhp/cpuhp_pause/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/power/gpu_frequency/enable
+     chmod 0666 /sys/kernel/tracing/events/power/gpu_frequency/enable
+-    chmod 0666 /sys/kernel/debug/tracing/events/power/suspend_resume/enable
+-    chmod 0666 /sys/kernel/tracing/events/power/suspend_resume/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/cpufreq_interactive/enable
+     chmod 0666 /sys/kernel/tracing/events/cpufreq_interactive/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/vmscan/mm_vmscan_direct_reclaim_begin/enable
+-- 
+2.25.1
+

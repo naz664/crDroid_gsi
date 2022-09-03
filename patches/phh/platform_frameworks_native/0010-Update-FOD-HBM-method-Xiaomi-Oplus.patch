@@ -1,0 +1,54 @@
+From a317644a2dc281e7009430e0ada134726e076daf Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Sun, 19 Dec 2021 16:54:31 -0500
+Subject: [PATCH 10/16] Update FOD/HBM method Xiaomi/Oplus
+
+Change-Id: If99362db18d8eace487e52716a138e15d1dcfab4
+---
+ .../CompositionEngine/src/OutputLayer.cpp            | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+index 2b7bf25dc7..f605b0271b 100644
+--- a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
++++ b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+@@ -38,6 +38,7 @@
+ static bool sCheckedProps = false;
+ static bool sBBKFod = false;
+ static bool sXiaomiFod = false;
++static bool sAsusFod = false;
+ 
+ namespace android::compositionengine {
+ 
+@@ -414,11 +415,15 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+         sCheckedProps = true;
+         sBBKFod = property_get_bool("persist.sys.phh.fod.bbk", false);
+         sXiaomiFod = property_get_bool("persist.sys.phh.fod.xiaomi", false);
++        sAsusFod = property_get_bool("persist.sys.phh.fod.asus", false);
+     }
+ 
+-    if(strstr(getLayerFE().getDebugName(), "Fingerprint on display") != nullptr) {
++#define UDFPS_BIOMETRIC_PROMPT_LAYER_NAME "BiometricPrompt#0"
++#define UDFPS_LAYER_NAME "UdfpsController#0"
++#define UDFPS_TOUCHED_LAYER_NAME "SurfaceView[UdfpsController](BLAST)#0"
++    if ((strcmp(getLayerFE().getDebugName(), UDFPS_LAYER_NAME) == 0)
++            || (strcmp(getLayerFE().getDebugName(), UDFPS_BIOMETRIC_PROMPT_LAYER_NAME) == 0)) {
+         ALOGE("Found fingerprint on display!");
+-        z = 0x41000031;
+         if(sBBKFod) {
+             z = 0x41000031;
+         } else if(sXiaomiFod) {
+@@ -426,9 +431,8 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+         }
+     }
+ 
+-    if(strstr(getLayerFE().getDebugName(), "Fingerprint on display.touched") != nullptr) {
++    if (strcmp(getLayerFE().getDebugName(), UDFPS_TOUCHED_LAYER_NAME) == 0) {
+         ALOGE("Found fingerprint on display touched!");
+-        z = 0x41000033;
+         if(sBBKFod) {
+             z = 0x41000033;
+         } else if(sXiaomiFod) {
+-- 
+2.25.1
+

@@ -1,0 +1,112 @@
+From dbe26ed8e0318ad79688ac67e9e84b446b982f67 Mon Sep 17 00:00:00 2001
+From: Alec Mouri <alecmouri@google.com>
+Date: Fri, 12 Nov 2021 12:13:20 -0800
+Subject: [PATCH 15/16] Don't crash skiagl backend.
+
+The skiagl backend was incorrectly being created as skiaglthreaded,
+which breaks mapping ExternalTextures off-thread. Specifically, there is
+a workaround that disables mapping ExternalTextures at all when the
+skiagl backend is used. Don't break that workaround by propagating the
+renderengine type properly to implementations.
+
+Bug: 205591213
+Bug: 196334700
+Bug: 193212592
+Bug: 220650195
+Test: `adb shell stop; adb shell setprop debug.renderengine.backend
+skiagl; adb shell start` boots
+
+Change-Id: I455d5d613ccaa210dc748969e025dc86c78080b8
+Merged-In: I455d5d613ccaa210dc748969e025dc86c78080b8
+(cherry picked from commit 71dabbb3d6ec1606a49d3c8e4dd9ebd444d9323e)
+---
+ libs/renderengine/RenderEngine.cpp            | 36 ++++++-------------
+ .../include/renderengine/RenderEngine.h       |  2 +-
+ 2 files changed, 11 insertions(+), 27 deletions(-)
+
+diff --git a/libs/renderengine/RenderEngine.cpp b/libs/renderengine/RenderEngine.cpp
+index 0c5a851c41..9e466b6c34 100644
+--- a/libs/renderengine/RenderEngine.cpp
++++ b/libs/renderengine/RenderEngine.cpp
+@@ -26,55 +26,39 @@
+ namespace android {
+ namespace renderengine {
+ 
+-std::unique_ptr<RenderEngine> RenderEngine::create(const RenderEngineCreationArgs& args) {
+-    RenderEngineType renderEngineType = args.renderEngineType;
+-
++std::unique_ptr<RenderEngine> RenderEngine::create(RenderEngineCreationArgs args) {
+     // Keep the ability to override by PROPERTIES:
+     char prop[PROPERTY_VALUE_MAX];
+     property_get(PROPERTY_DEBUG_RENDERENGINE_BACKEND, prop, "");
+     if (strcmp(prop, "gles") == 0) {
+-        renderEngineType = RenderEngineType::GLES;
++        args.renderEngineType = RenderEngineType::GLES;
+     }
+     if (strcmp(prop, "threaded") == 0) {
+-        renderEngineType = RenderEngineType::THREADED;
++        args.renderEngineType = RenderEngineType::THREADED;
+     }
+     if (strcmp(prop, "skiagl") == 0) {
+-        renderEngineType = RenderEngineType::SKIA_GL;
++        args.renderEngineType = RenderEngineType::SKIA_GL;
+     }
+     if (strcmp(prop, "skiaglthreaded") == 0) {
+-        renderEngineType = RenderEngineType::SKIA_GL_THREADED;
++        args.renderEngineType = RenderEngineType::SKIA_GL_THREADED;
+     }
+ 
+-    switch (renderEngineType) {
++    switch (args.renderEngineType) {
+         case RenderEngineType::THREADED:
+             ALOGD("Threaded RenderEngine with GLES Backend");
+             return renderengine::threaded::RenderEngineThreaded::create(
+                     [args]() { return android::renderengine::gl::GLESRenderEngine::create(args); },
+-                    renderEngineType);
++                    args.renderEngineType);
+         case RenderEngineType::SKIA_GL:
+             ALOGD("RenderEngine with SkiaGL Backend");
+             return renderengine::skia::SkiaGLRenderEngine::create(args);
+         case RenderEngineType::SKIA_GL_THREADED: {
+-            // These need to be recreated, since they are a constant reference, and we need to
+-            // let SkiaRE know that it's running as threaded, and all GL operation will happen on
+-            // the same thread.
+-            RenderEngineCreationArgs skiaArgs =
+-                    RenderEngineCreationArgs::Builder()
+-                            .setPixelFormat(args.pixelFormat)
+-                            .setImageCacheSize(args.imageCacheSize)
+-                            .setUseColorManagerment(args.useColorManagement)
+-                            .setEnableProtectedContext(args.enableProtectedContext)
+-                            .setPrecacheToneMapperShaderOnly(args.precacheToneMapperShaderOnly)
+-                            .setSupportsBackgroundBlur(args.supportsBackgroundBlur)
+-                            .setContextPriority(args.contextPriority)
+-                            .setRenderEngineType(renderEngineType)
+-                            .build();
+             ALOGD("Threaded RenderEngine with SkiaGL Backend");
+             return renderengine::threaded::RenderEngineThreaded::create(
+-                    [skiaArgs]() {
+-                        return android::renderengine::skia::SkiaGLRenderEngine::create(skiaArgs);
++                    [args]() {
++                        return android::renderengine::skia::SkiaGLRenderEngine::create(args);
+                     },
+-                    renderEngineType);
++                    args.renderEngineType);
+         }
+         case RenderEngineType::GLES:
+         default:
+diff --git a/libs/renderengine/include/renderengine/RenderEngine.h b/libs/renderengine/include/renderengine/RenderEngine.h
+index 967cf5deff..f555cdbc0d 100644
+--- a/libs/renderengine/include/renderengine/RenderEngine.h
++++ b/libs/renderengine/include/renderengine/RenderEngine.h
+@@ -98,7 +98,7 @@ public:
+         SKIA_GL_THREADED = 4,
+     };
+ 
+-    static std::unique_ptr<RenderEngine> create(const RenderEngineCreationArgs& args);
++    static std::unique_ptr<RenderEngine> create(RenderEngineCreationArgs args);
+ 
+     virtual ~RenderEngine() = 0;
+ 
+-- 
+2.25.1
+

@@ -1,0 +1,26 @@
+From 8a0b1e1541404c6b5c813f9f1a1cd1af70b4b0d5 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Thu, 3 Mar 2022 09:17:17 -0500
+Subject: [PATCH 30/35] Allow 128bits SHA1 IPSec keys. This is required to
+ implement VoLTE with this API
+
+---
+ core/java/android/net/IpSecAlgorithm.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/java/android/net/IpSecAlgorithm.java b/core/java/android/net/IpSecAlgorithm.java
+index 7ef5bac092f6..326573818655 100644
+--- a/core/java/android/net/IpSecAlgorithm.java
++++ b/core/java/android/net/IpSecAlgorithm.java
+@@ -385,7 +385,7 @@ public final class IpSecAlgorithm implements Parcelable {
+                 isValidTruncLen = truncLen >= 96 && truncLen <= 128;
+                 break;
+             case AUTH_HMAC_SHA1:
+-                isValidLen = keyLen == 160;
++                isValidLen = true;
+                 isValidTruncLen = truncLen >= 96 && truncLen <= 160;
+                 break;
+             case AUTH_HMAC_SHA256:
+-- 
+2.25.1
+

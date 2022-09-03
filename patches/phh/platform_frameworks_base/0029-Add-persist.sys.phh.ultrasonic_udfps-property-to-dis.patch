@@ -1,0 +1,39 @@
+From fbaba1b8957b250562252441100cdb8585bec303 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Thu, 3 Mar 2022 09:15:32 -0500
+Subject: [PATCH 29/35] Add persist.sys.phh.ultrasonic_udfps property to
+ disable green circle for udfps
+
+---
+ .../com/android/server/biometrics/AuthService.java   | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/services/core/java/com/android/server/biometrics/AuthService.java b/services/core/java/com/android/server/biometrics/AuthService.java
+index 62ea6dd8633b..28d538c1dca2 100644
+--- a/services/core/java/com/android/server/biometrics/AuthService.java
++++ b/services/core/java/com/android/server/biometrics/AuthService.java
+@@ -1002,13 +1002,17 @@ public class AuthService extends SystemService {
+             isUdfps = true;
+         }
+ 
+-	if(udfpsProps.length > 0) {
+-	    Slog.d("PHH-Enroll", "Samsung got udfps infos " + udfpsProps[0] + ", " + udfpsProps[1] + ", " + udfpsProps[2]);
+-	}
++        if(udfpsProps.length > 0) {
++                Slog.d("PHH-Enroll", "Got udfps infos " + udfpsProps[0] + ", " + udfpsProps[1] + ", " + udfpsProps[2]);
++        }
+ 
+         final @FingerprintSensorProperties.SensorType int sensorType;
+         if (isUdfps) {
+-            sensorType = FingerprintSensorProperties.TYPE_UDFPS_OPTICAL;
++            if(android.os.SystemProperties.getBoolean("persist.sys.phh.ultrasonic_udfps", false)) {
++                sensorType = FingerprintSensorProperties.TYPE_UDFPS_ULTRASONIC;
++            } else {
++                sensorType = FingerprintSensorProperties.TYPE_UDFPS_OPTICAL;
++            }
+         } else if (isPowerbuttonFps) {
+             sensorType = FingerprintSensorProperties.TYPE_POWER_BUTTON;
+         } else {
+-- 
+2.25.1
+

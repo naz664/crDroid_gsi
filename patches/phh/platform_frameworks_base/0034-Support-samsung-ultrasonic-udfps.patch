@@ -1,0 +1,83 @@
+From edadeb2e5f79726a42549e1d3a9b3fc628d70559 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Mon, 2 May 2022 18:02:40 -0400
+Subject: [PATCH 34/35] Support samsung ultrasonic udfps
+
+---
+ .../systemui/biometrics/UdfpsView.java        |  4 +++-
+ .../sensors/fingerprint/UdfpsHelper.java      | 23 +++++++++++++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.java
+index dd5da24a87bf..f76314e3533d 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.java
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.java
+@@ -65,7 +65,7 @@ public class UdfpsView extends FrameLayout implements DozeReceiver, UdfpsIllumin
+     @NonNull private final Paint mDebugTextPaint;
+     private final float mSensorTouchAreaCoefficient;
+     private final int mOnIlluminatedDelayMs;
+-    private final @HbmType int mHbmType;
++    private @HbmType int mHbmType;
+ 
+     // Only used for UdfpsHbmTypes.GLOBAL_HBM.
+     @Nullable private UdfpsSurfaceView mGhbmView;
+@@ -151,6 +151,8 @@ public class UdfpsView extends FrameLayout implements DozeReceiver, UdfpsIllumin
+                     SETTING_HBM_TYPE, DEFAULT_HBM_TYPE, UserHandle.USER_CURRENT);
+         } else {
+             mHbmType = DEFAULT_HBM_TYPE;
++            if(android.os.SystemProperties.getBoolean("persist.sys.phh.ultrasonic_udfps", false))
++                mHbmType = UdfpsHbmTypes.LOCAL_HBM;
+         }
+     }
+ 
+diff --git a/services/core/java/com/android/server/biometrics/sensors/fingerprint/UdfpsHelper.java b/services/core/java/com/android/server/biometrics/sensors/fingerprint/UdfpsHelper.java
+index e97f70d7bffd..8e99392cf545 100644
+--- a/services/core/java/com/android/server/biometrics/sensors/fingerprint/UdfpsHelper.java
++++ b/services/core/java/com/android/server/biometrics/sensors/fingerprint/UdfpsHelper.java
+@@ -24,6 +24,7 @@ import android.os.RemoteException;
+ import android.util.Slog;
+ 
+ import vendor.goodix.hardware.biometrics.fingerprint.V2_1.IGoodixFingerprintDaemon;
++import vendor.samsung.hardware.biometrics.fingerprint.V3_0.ISehBiometricsFingerprint;
+ 
+ import java.io.PrintWriter;
+ 
+@@ -59,6 +60,17 @@ public class UdfpsHelper {
+             }
+         }
+ 
++        try {
++            if("true".equals(android.os.SystemProperties.get("persist.sys.phh.ultrasonic_udfps"))) {
++                Slog.e(TAG, "trying ultrasonic samsung pressed");
++                ISehBiometricsFingerprint fp = ISehBiometricsFingerprint.getService();
++                fp.sehRequest(22 /* SEM_FINGER_STATE */, 2 /* finger pressed */, new java.util.ArrayList<Byte>(),
++                        (int retval, java.util.ArrayList<Byte> out) -> {} );
++            }
++        } catch(Throwable t) {
++            Slog.e(TAG, "Tried sending Samsung command failed");
++        }
++
+         try {
+             // Asus goodix commands
+             IGoodixFingerprintDaemon goodixDaemon = IGoodixFingerprintDaemon.getService();
+@@ -114,6 +126,17 @@ public class UdfpsHelper {
+             }
+         }
+ 
++        try {
++            if("true".equals(android.os.SystemProperties.get("persist.sys.phh.ultrasonic_udfps"))) {
++                Slog.e(TAG, "trying ultrasonic samsung released");
++                ISehBiometricsFingerprint fp = ISehBiometricsFingerprint.getService();
++                fp.sehRequest(22 /* SEM_FINGER_STATE */, 1 /* finger pressed */, new java.util.ArrayList<Byte>(),
++                        (int retval, java.util.ArrayList<Byte> out) -> {} );
++            }
++        } catch(Throwable t) {
++            Slog.e(TAG, "Tried sending Samsung command failed");
++        }
++
+         try {
+             IGoodixFingerprintDaemon goodixDaemon = IGoodixFingerprintDaemon.getService();
+             if(android.os.SystemProperties.get("ro.vendor.build.fingerprint").contains("ASUS")) {
+-- 
+2.25.1
+

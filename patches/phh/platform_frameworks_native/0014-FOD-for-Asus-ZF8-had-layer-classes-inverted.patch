@@ -1,0 +1,34 @@
+From 11d60549747d932a35aa819bfa7ffbb7ddf57808 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Fri, 4 Mar 2022 19:28:41 -0500
+Subject: [PATCH 14/16] FOD for Asus ZF8 had layer classes inverted
+
+---
+ services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+index cd81a5e5d0..49a0f013cc 100644
+--- a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
++++ b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+@@ -429,7 +429,7 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+         } else if(sXiaomiFod) {
+             z |= 0x1000000;
+         } else if(sAsusFod) {
+-            hwcLayer->setLayerClass(4);
++            hwcLayer->setLayerClass(5);
+         }
+     }
+ 
+@@ -440,7 +440,7 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+         } else if(sXiaomiFod) {
+             z |= 0x2000000;
+         } else if(sAsusFod) {
+-            hwcLayer->setLayerClass(5);
++            hwcLayer->setLayerClass(4);
+         }
+     }
+ 
+-- 
+2.25.1
+

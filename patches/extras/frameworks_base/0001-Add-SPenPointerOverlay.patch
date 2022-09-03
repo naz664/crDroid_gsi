@@ -1,0 +1,128 @@
+From 95892a9639f2e199628a3009ec123694cd5e1613 Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Thu, 13 Jan 2022 14:22:24 +0000
+Subject: [PATCH 01/12] Add SPenPointerOverlay
+
+Toggle this overlay with property "persist.ui.spen.pointer"
+
+Change-Id: I21f7e05cf8ebd74c950dfb20cf7eee99bfe22988
+---
+ packages/overlays/Android.mk                  |   3 +-
+ .../overlays/SPenPointerOverlay/Android.bp    |  28 ++++++++++++++++++
+ .../SPenPointerOverlay/AndroidManifest.xml    |  23 ++++++++++++++
+ .../sem_pointer_spot_hovering_spen.png        | Bin 0 -> 411 bytes
+ .../res/drawable/pointer_arrow_icon.xml       |   5 ++++
+ 5 files changed, 58 insertions(+), 1 deletion(-)
+ create mode 100644 packages/overlays/SPenPointerOverlay/Android.bp
+ create mode 100644 packages/overlays/SPenPointerOverlay/AndroidManifest.xml
+ create mode 100644 packages/overlays/SPenPointerOverlay/res/drawable-xxhdpi/sem_pointer_spot_hovering_spen.png
+ create mode 100644 packages/overlays/SPenPointerOverlay/res/drawable/pointer_arrow_icon.xml
+
+diff --git a/packages/overlays/Android.mk b/packages/overlays/Android.mk
+index 928892c60e47..3a114bc8ec79 100644
+--- a/packages/overlays/Android.mk
++++ b/packages/overlays/Android.mk
+@@ -31,7 +31,8 @@ LOCAL_REQUIRED_MODULES := \
+ 	NavigationBarModeGesturalOverlayNarrowBack \
+ 	NavigationBarModeGesturalOverlayWideBack \
+ 	NavigationBarModeGesturalOverlayExtraWideBack \
+-        OneHandedModeGesturalOverlay \
++	OneHandedModeGesturalOverlay \
++	SPenPointerOverlay \
+ 	preinstalled-packages-platform-overlays.xml
+ 
+ include $(BUILD_PHONY_PACKAGE)
+diff --git a/packages/overlays/SPenPointerOverlay/Android.bp b/packages/overlays/SPenPointerOverlay/Android.bp
+new file mode 100644
+index 000000000000..7632ebd43ef6
+--- /dev/null
++++ b/packages/overlays/SPenPointerOverlay/Android.bp
+@@ -0,0 +1,28 @@
++//
++//  Copyright 2021, The Android Open Source Project
++//
++// Licensed under the Apache License, Version 2.0 (the "License");
++// you may not use this file except in compliance with the License.
++// You may obtain a copy of the License at
++//
++//     http://www.apache.org/licenses/LICENSE-2.0
++//
++// Unless required by applicable law or agreed to in writing, software
++// distributed under the License is distributed on an "AS IS" BASIS,
++// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++// See the License for the specific language governing permissions and
++// limitations under the License.
++//
++package {
++    // See: http://go/android-license-faq
++    // A large-scale-change added 'default_applicable_licenses' to import
++    // all of the 'license_kinds' from "frameworks_base_license"
++    // to get the below license kinds:
++    //   SPDX-license-identifier-Apache-2.0
++    default_applicable_licenses: ["frameworks_base_license"],
++}
++
++runtime_resource_overlay {
++    name: "SPenPointerOverlay",
++    product_specific: true,
++}
+diff --git a/packages/overlays/SPenPointerOverlay/AndroidManifest.xml b/packages/overlays/SPenPointerOverlay/AndroidManifest.xml
+new file mode 100644
+index 000000000000..b785214f854b
+--- /dev/null
++++ b/packages/overlays/SPenPointerOverlay/AndroidManifest.xml
+@@ -0,0 +1,23 @@
++<!--
++  ~ Copyright (C) 2021 The Android Open Source Project
++  ~
++  ~ Licensed under the Apache License, Version 2.0 (the "License");
++  ~ you may not use this file except in compliance with the License.
++  ~ You may obtain a copy of the License at
++  ~
++  ~      http://www.apache.org/licenses/LICENSE-2.0
++  ~
++  ~ Unless required by applicable law or agreed to in writing, software
++  ~ distributed under the License is distributed on an "AS IS" BASIS,
++  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++  ~ See the License for the specific language governing permissions and
++  ~ limitations under the License.
++  -->
++
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++        package="com.samsung.android.spenpointer.overlay"
++        android:versionCode="1"
++        android:versionName="1.0">
++    <overlay android:targetPackage="android" android:priority="5932" android:isStatic="true"
++        android:requiredSystemPropertyName="persist.ui.spen.pointer" android:requiredSystemPropertyValue="true"/>
++</manifest>
+diff --git a/packages/overlays/SPenPointerOverlay/res/drawable-xxhdpi/sem_pointer_spot_hovering_spen.png b/packages/overlays/SPenPointerOverlay/res/drawable-xxhdpi/sem_pointer_spot_hovering_spen.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..b73246c80a95e0bceeb8c09aacd2653722fca2d2
+GIT binary patch
+literal 411
+zcmeAS@N?(olHy`uVBq!ia0vp^av;pX3?zBp#Z3TG?EyX^u0VPYDww}y>9XB>H{O1*
+z{q+Z+%%XMcH{QCp_4%7Ek6&zi^&Z52_8N#bKYY6T$G`bYmOylGdHNEl2EyKW`#w-H
+zMEkav?|=xXa@&iyKv|#(o9;XSGJv*hefA2d9ViRrHpmHroTOV4<QL2kefT?*&XynF
+zf9jt6d~bTxr(K#H%-fm6)$T^@`96*P!_O$D=#P=#_iokL5u<mvYQ}e<#%Z1|jv*T7
+z-(HO6Z&DCpO9*-59T;HT8)CHh%)kHdv-@V7U0D0tD*XMooHrlj82&Lg8FU>wkZ<5N
+zBf!g`Yhiojq)$5MjpwPIIqY#_(VA78COitTt~#=3<I2pBClgEGRn7j@r_s({E14^`
+zzN)C=(stXhXOBPbPTyLVZ~8%?D9+x@`{Nq(tjK9wr(Jhj*%s6+*nEHflkLxVMFlvw
+UdB5Fp8R$X=Pgg&ebxsLQ0B%Ow$N&HU
+
+literal 0
+HcmV?d00001
+
+diff --git a/packages/overlays/SPenPointerOverlay/res/drawable/pointer_arrow_icon.xml b/packages/overlays/SPenPointerOverlay/res/drawable/pointer_arrow_icon.xml
+new file mode 100644
+index 000000000000..f35255c5f961
+--- /dev/null
++++ b/packages/overlays/SPenPointerOverlay/res/drawable/pointer_arrow_icon.xml
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<pointer-icon xmlns:android="http://schemas.android.com/apk/res/android"
++    android:bitmap="@drawable/sem_pointer_spot_hovering_spen"
++    android:hotSpotX="5dp"
++    android:hotSpotY="5dp" />
+-- 
+2.25.1
+

@@ -1,0 +1,28 @@
+From 11f9655fe9e3d156ff60aee139391fca737c273e Mon Sep 17 00:00:00 2001
+From: Alexander Koskovich <zvnexus@outlook.com>
+Date: Sat, 3 Oct 2020 14:28:35 -0700
+Subject: [PATCH 1/6] Make broken copy headers the default
+
+ * Do not take this for S unless needed, this is a hack
+   for this cycle.
+
+Change-Id: I55c8897d7d4d5c2a9e62b1a931b3856b2e38956e
+---
+ core/board_config.mk | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/board_config.mk b/core/board_config.mk
+index eeaf4c449..af63d3508 100644
+--- a/core/board_config.mk
++++ b/core/board_config.mk
+@@ -113,6 +113,7 @@ endif
+ # ###############################################################
+ $(foreach v,$(_build_broken_var_list),$(eval $(v) :=))
+ BUILD_BROKEN_NINJA_USES_ENV_VARS :=
++BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
+ 
+ # Boards may be defined under $(SRC_TARGET_DIR)/board/$(TARGET_DEVICE)
+ # or under vendor/*/$(TARGET_DEVICE).  Search in both places, but
+-- 
+2.25.1
+

@@ -1,0 +1,76 @@
+From 7891d4dd5e8ef676e94f65cc66a362c21af24a84 Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Wed, 8 Dec 2021 07:04:53 +0000
+Subject: [PATCH 5/6] Remove init.vndk-nodef.rc
+
+This partially reverts "Deprecate VNDK-lite support from Legacy GSI".
+
+Paired with https://github.com/LineageOS/android_system_core/commit/0b265e35ddf42638fa807f5349a10c40e3d46446, it kicks permissive devices into bootloader.
+Given that GSI+permissive won't ever be a Lineage official scenario, revert this only on our side.
+Thanks @Kethen for the insight!
+
+Change-Id: I7c14fe5229e953f620bb225fa5c981752d0ac5f9
+---
+ target/product/gsi/Android.mk         | 12 ------------
+ target/product/gsi/init.gsi.rc        |  2 --
+ target/product/gsi/init.vndk-nodef.rc |  3 ---
+ target/product/gsi_release.mk         |  3 +--
+ 4 files changed, 1 insertion(+), 19 deletions(-)
+ delete mode 100644 target/product/gsi/init.vndk-nodef.rc
+
+diff --git a/target/product/gsi/Android.mk b/target/product/gsi/Android.mk
+index cb4fdcb33..f2c0f212c 100644
+--- a/target/product/gsi/Android.mk
++++ b/target/product/gsi/Android.mk
+@@ -228,15 +228,3 @@ LOCAL_SYSTEM_EXT_MODULE := true
+ LOCAL_MODULE_RELATIVE_PATH := init
+ 
+ include $(BUILD_PREBUILT)
+-
+-
+-include $(CLEAR_VARS)
+-LOCAL_MODULE := init.vndk-nodef.rc
+-LOCAL_LICENSE_KINDS := legacy_restricted
+-LOCAL_LICENSE_CONDITIONS := restricted
+-LOCAL_SRC_FILES := $(LOCAL_MODULE)
+-LOCAL_MODULE_CLASS := ETC
+-LOCAL_SYSTEM_EXT_MODULE := true
+-LOCAL_MODULE_RELATIVE_PATH := init
+-
+-include $(BUILD_PREBUILT)
+diff --git a/target/product/gsi/init.gsi.rc b/target/product/gsi/init.gsi.rc
+index f48284322..c6faba78d 100644
+--- a/target/product/gsi/init.gsi.rc
++++ b/target/product/gsi/init.gsi.rc
+@@ -1,5 +1,3 @@
+ #
+ # Android init script for GSI required initialization
+ #
+-
+-import /system/system_ext/etc/init/init.vndk-${ro.vndk.version:-nodef}.rc
+diff --git a/target/product/gsi/init.vndk-nodef.rc b/target/product/gsi/init.vndk-nodef.rc
+deleted file mode 100644
+index efeef117b..000000000
+--- a/target/product/gsi/init.vndk-nodef.rc
++++ /dev/null
+@@ -1,3 +0,0 @@
+-on early-init
+-    # Must define BOARD_VNDK_VERSION
+-    exec - root -- /system/bin/reboot bootloader
+diff --git a/target/product/gsi_release.mk b/target/product/gsi_release.mk
+index a2a29ed0f..74413b191 100644
+--- a/target/product/gsi_release.mk
++++ b/target/product/gsi_release.mk
+@@ -59,8 +59,7 @@ PRODUCT_PACKAGES += com.android.apex.cts.shim.v1_with_prebuilts.flattened
+ # GSI specific tasks on boot
+ PRODUCT_PACKAGES += \
+     gsi_skip_mount.cfg \
+-    init.gsi.rc \
+-    init.vndk-nodef.rc \
++    init.gsi.rc
+ 
+ # Support additional VNDK snapshots
+ PRODUCT_EXTRA_VNDK_VERSIONS := \
+-- 
+2.25.1
+

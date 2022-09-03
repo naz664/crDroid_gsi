@@ -1,0 +1,129 @@
+From 46199938b040226c6965fb9083641a07ffa560db Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Sun, 19 Dec 2021 17:04:51 -0500
+Subject: [PATCH 11/16] For FOD/HBM on Asus devices, call the HWC extended call
+ setLayerClass
+
+Change-Id: Id8773fc3d2fb6d2bd228503b1ee0d77864b2eb05
+---
+ .../CompositionEngine/src/OutputLayer.cpp              |  4 ++++
+ .../surfaceflinger/DisplayHardware/ComposerHal.cpp     |  7 +++++++
+ services/surfaceflinger/DisplayHardware/ComposerHal.h  |  6 ++++++
+ services/surfaceflinger/DisplayHardware/HWC2.cpp       | 10 ++++++++++
+ services/surfaceflinger/DisplayHardware/HWC2.h         |  4 ++++
+ 5 files changed, 31 insertions(+)
+
+diff --git a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+index f605b0271b..cd81a5e5d0 100644
+--- a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
++++ b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+@@ -428,6 +428,8 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+             z = 0x41000031;
+         } else if(sXiaomiFod) {
+             z |= 0x1000000;
++        } else if(sAsusFod) {
++            hwcLayer->setLayerClass(4);
+         }
+     }
+ 
+@@ -437,6 +439,8 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+             z = 0x41000033;
+         } else if(sXiaomiFod) {
+             z |= 0x2000000;
++        } else if(sAsusFod) {
++            hwcLayer->setLayerClass(5);
+         }
+     }
+ 
+diff --git a/services/surfaceflinger/DisplayHardware/ComposerHal.cpp b/services/surfaceflinger/DisplayHardware/ComposerHal.cpp
+index 09734c275f..19f22f453b 100644
+--- a/services/surfaceflinger/DisplayHardware/ComposerHal.cpp
++++ b/services/surfaceflinger/DisplayHardware/ComposerHal.cpp
+@@ -1220,6 +1220,13 @@ V2_4::Error Composer::setLayerGenericMetadata(Display display, Layer layer, cons
+     return Error::NONE;
+ }
+ 
++Error Composer::setLayerClass(Display display, Layer layer, uint32_t layerClass) {
++    mWriter.selectDisplay(display);
++    mWriter.selectLayer(layer);
++    mWriter.vendor800_1(layerClass);
++    return Error::NONE;
++}
++
+ V2_4::Error Composer::getLayerGenericMetadataKeys(
+         std::vector<IComposerClient::LayerGenericMetadataKey>* outKeys) {
+     using Error = V2_4::Error;
+diff --git a/services/surfaceflinger/DisplayHardware/ComposerHal.h b/services/surfaceflinger/DisplayHardware/ComposerHal.h
+index fe114b9512..669e652fba 100644
+--- a/services/surfaceflinger/DisplayHardware/ComposerHal.h
++++ b/services/surfaceflinger/DisplayHardware/ComposerHal.h
+@@ -231,6 +231,9 @@ public:
+             std::vector<IComposerClient::LayerGenericMetadataKey>* outKeys) = 0;
+     virtual Error getClientTargetProperty(
+             Display display, IComposerClient::ClientTargetProperty* outClientTargetProperty) = 0;
++
++    // Asus proprietary
++    virtual Error setLayerClass(Display display, Layer layer, uint32_t layerClass);
+ };
+ 
+ namespace impl {
+@@ -467,10 +470,13 @@ public:
+                                         bool mandatory, const std::vector<uint8_t>& value) override;
+     V2_4::Error getLayerGenericMetadataKeys(
+             std::vector<IComposerClient::LayerGenericMetadataKey>* outKeys) override;
++
+     Error getClientTargetProperty(
+             Display display,
+             IComposerClient::ClientTargetProperty* outClientTargetProperty) override;
+ 
++    // Asus proprietary
++    Error setLayerClass(Display display, Layer layer, uint32_t layerClass);
+ private:
+     class CommandWriter : public CommandWriterBase {
+     public:
+diff --git a/services/surfaceflinger/DisplayHardware/HWC2.cpp b/services/surfaceflinger/DisplayHardware/HWC2.cpp
+index 27146ab79c..474c3eade5 100644
+--- a/services/surfaceflinger/DisplayHardware/HWC2.cpp
++++ b/services/surfaceflinger/DisplayHardware/HWC2.cpp
+@@ -872,6 +872,16 @@ Error Layer::setZOrder(uint32_t z)
+     return static_cast<Error>(intError);
+ }
+ 
++Error Layer::setLayerClass(uint32_t val)
++{
++    if (CC_UNLIKELY(!mDisplay)) {
++        return Error::BAD_DISPLAY;
++    }
++
++    auto intError = mComposer.setLayerClass(mDisplay->getId(), mId, val);
++    return static_cast<Error>(intError);
++}
++
+ // Composer HAL 2.3
+ Error Layer::setColorTransform(const android::mat4& matrix) {
+     if (CC_UNLIKELY(!mDisplay)) {
+diff --git a/services/surfaceflinger/DisplayHardware/HWC2.h b/services/surfaceflinger/DisplayHardware/HWC2.h
+index 871465d717..7a04047407 100644
+--- a/services/surfaceflinger/DisplayHardware/HWC2.h
++++ b/services/surfaceflinger/DisplayHardware/HWC2.h
+@@ -287,6 +287,8 @@ public:
+     // Composer HAL 2.4
+     [[clang::warn_unused_result]] virtual hal::Error setLayerGenericMetadata(
+             const std::string& name, bool mandatory, const std::vector<uint8_t>& value) = 0;
++
++    virtual hal::Error setLayerClass(uint32_t layerClass) = 0;
+ };
+ 
+ namespace impl {
+@@ -330,6 +332,8 @@ public:
+     hal::Error setLayerGenericMetadata(const std::string& name, bool mandatory,
+                                        const std::vector<uint8_t>& value) override;
+ 
++    hal::Error setLayerClass(uint32_t layerClass);
++
+ private:
+     // These are references to data owned by HWC2::Device, which will outlive
+     // this HWC2::Layer, so these references are guaranteed to be valid for
+-- 
+2.25.1
+

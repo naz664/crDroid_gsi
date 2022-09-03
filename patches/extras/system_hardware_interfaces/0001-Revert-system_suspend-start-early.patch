@@ -1,0 +1,26 @@
+From 3f9bb76ad5bd49f638a2b6a6548fb26fb9a34c52 Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Sun, 10 Jan 2021 11:44:29 +0000
+Subject: [PATCH] Revert "system_suspend: start early"
+
+This reverts commit cb732f9b635b5f6f79e447ddaf743ebb800b8535
+
+Change-Id: I00204ebbe6f807a04bc8529f02f6eb4a26b1478e
+---
+ suspend/1.0/default/android.system.suspend@1.0-service.rc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/suspend/1.0/default/android.system.suspend@1.0-service.rc b/suspend/1.0/default/android.system.suspend@1.0-service.rc
+index 965ca16..c5d3869 100644
+--- a/suspend/1.0/default/android.system.suspend@1.0-service.rc
++++ b/suspend/1.0/default/android.system.suspend@1.0-service.rc
+@@ -1,5 +1,5 @@
+ service system_suspend /system/bin/hw/android.system.suspend@1.0-service
+-    class early_hal
++    class hal
+     user system
+     group system wakelock
+     capabilities BLOCK_SUSPEND
+-- 
+2.25.1
+

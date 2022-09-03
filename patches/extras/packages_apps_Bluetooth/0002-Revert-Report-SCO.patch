@@ -1,0 +1,82 @@
+From 865b25e9670b582f68b14f7a0bd259c390327e99 Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Sat, 18 Jun 2022 02:01:20 +0000
+Subject: [PATCH] Revert "hfp: Report SCO sample rate via g_sco_samplerate
+ audio param if needed"
+
+This reverts commit 9633a63ff1f31c7a7246f1aaa1f4456812e7b1e0.
+---
+ res/values/config.xml                               |  2 --
+ .../android/bluetooth/btservice/AdapterService.java |  4 ----
+ .../android/bluetooth/hfp/HeadsetStateMachine.java  | 13 -------------
+ 3 files changed, 19 deletions(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 42ecca47f..0fc3fdc4f 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -135,6 +135,4 @@
+      -->
+     <bool name="enable_gd_up_to_scanning_layer">false</bool>
+ 
+-    <!-- If true, SCO sample rate will be reported via g_sco_samplerate audio parameter -->
+-    <bool name="sco_report_samplerate">false</bool>
+ </resources>
+diff --git a/src/com/android/bluetooth/btservice/AdapterService.java b/src/com/android/bluetooth/btservice/AdapterService.java
+index 098dbfd68..1c59449d8 100644
+--- a/src/com/android/bluetooth/btservice/AdapterService.java
++++ b/src/com/android/bluetooth/btservice/AdapterService.java
+@@ -4018,8 +4018,4 @@ public class AdapterService extends Service {
+     public boolean isMock() {
+         return false;
+     }
+-
+-    public boolean shouldReportScoSampleRate() {
+-        return getResources().getBoolean(com.android.bluetooth.R.bool.sco_report_samplerate);
+-    }
+ }
+diff --git a/src/com/android/bluetooth/hfp/HeadsetStateMachine.java b/src/com/android/bluetooth/hfp/HeadsetStateMachine.java
+index fc7b5da14..03ba99ac2 100644
+--- a/src/com/android/bluetooth/hfp/HeadsetStateMachine.java
++++ b/src/com/android/bluetooth/hfp/HeadsetStateMachine.java
+@@ -87,9 +87,6 @@ public class HeadsetStateMachine extends StateMachine {
+     private static final String HEADSET_WBS = "bt_wbs";
+     private static final String HEADSET_AUDIO_FEATURE_ON = "on";
+     private static final String HEADSET_AUDIO_FEATURE_OFF = "off";
+-    private static final String HEADSET_G_SCO_SAMPLERATE = "g_sco_samplerate";
+-    private static final String HEADSET_G_WB_SAMPLERATE = "16000";
+-    private static final String HEADSET_G_NB_SAMPLERATE = "8000";
+ 
+     static final int CONNECT = 1;
+     static final int DISCONNECT = 2;
+@@ -1552,10 +1549,6 @@ public class HeadsetStateMachine extends StateMachine {
+                 HEADSET_WBS + "=" + mAudioParams.getOrDefault(HEADSET_WBS,
+                         HEADSET_AUDIO_FEATURE_OFF)
+         });
+-        if (mAdapterService.shouldReportScoSampleRate()) {
+-            keyValuePairs += ";" + HEADSET_G_SCO_SAMPLERATE + "=" + mAudioParams.getOrDefault(
+-                    HEADSET_G_SCO_SAMPLERATE, HEADSET_G_NB_SAMPLERATE);
+-        }
+         Log.i(TAG, "setAudioParameters for " + mDevice + ": " + keyValuePairs);
+         mSystemInterface.getAudioManager().setParameters(keyValuePairs);
+     }
+@@ -1697,16 +1690,10 @@ public class HeadsetStateMachine extends StateMachine {
+         switch (wbsConfig) {
+             case HeadsetHalConstants.BTHF_WBS_YES:
+                 mAudioParams.put(HEADSET_WBS, HEADSET_AUDIO_FEATURE_ON);
+-                if (mAdapterService.shouldReportScoSampleRate()) {
+-                    mAudioParams.put(HEADSET_G_SCO_SAMPLERATE, HEADSET_G_WB_SAMPLERATE);
+-                }
+                 break;
+             case HeadsetHalConstants.BTHF_WBS_NO:
+             case HeadsetHalConstants.BTHF_WBS_NONE:
+                 mAudioParams.put(HEADSET_WBS, HEADSET_AUDIO_FEATURE_OFF);
+-                if (mAdapterService.shouldReportScoSampleRate()) {
+-                    mAudioParams.put(HEADSET_G_SCO_SAMPLERATE, HEADSET_G_NB_SAMPLERATE);
+-                }
+                 break;
+             default:
+                 Log.e(TAG, "processWBSEvent: unknown wbsConfig " + wbsConfig);
+-- 
+2.17.1
+

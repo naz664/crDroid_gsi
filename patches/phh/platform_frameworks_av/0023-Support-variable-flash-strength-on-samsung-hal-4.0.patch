@@ -1,0 +1,52 @@
+From d6adaf1022ba17c8b27d63f9f89e44fc2828d14b Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Mon, 2 May 2022 17:37:09 -0400
+Subject: [PATCH 23/23] Support variable flash strength on samsung hal 4.0
+
+---
+ services/camera/libcameraservice/Android.bp                 | 1 +
+ .../libcameraservice/common/CameraProviderManager.cpp       | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/services/camera/libcameraservice/Android.bp b/services/camera/libcameraservice/Android.bp
+index b616f8207f..3b99e643e5 100644
+--- a/services/camera/libcameraservice/Android.bp
++++ b/services/camera/libcameraservice/Android.bp
+@@ -157,6 +157,7 @@ cc_library_shared {
+         "vendor.samsung.hardware.camera.provider@3.0",
+         "vendor.samsung.hardware.camera.provider@4.0",
+         "vendor.samsung.hardware.camera.device@5.0",
++        "vendor.samsung.hardware.camera.device@4.0",
+         "media_permission-aidl-cpp",
+     ],
+ 
+diff --git a/services/camera/libcameraservice/common/CameraProviderManager.cpp b/services/camera/libcameraservice/common/CameraProviderManager.cpp
+index 19f217711c..f6d8e276ee 100644
+--- a/services/camera/libcameraservice/common/CameraProviderManager.cpp
++++ b/services/camera/libcameraservice/common/CameraProviderManager.cpp
+@@ -24,6 +24,7 @@
+ #include <vendor/samsung/hardware/camera/provider/3.0/ISehCameraProvider.h>
+ #include <vendor/samsung/hardware/camera/provider/4.0/ISehCameraProvider.h>
+ #include <vendor/samsung/hardware/camera/device/5.0/ISehCameraDevice.h>
++#include <vendor/samsung/hardware/camera/device/4.0/ISehCameraDevice.h>
+ 
+ #include <algorithm>
+ #include <chrono>
+@@ -2284,9 +2285,14 @@ status_t CameraProviderManager::ProviderInfo::DeviceInfo::setTorchMode(Interface
+     auto sehCast = vendor::samsung::hardware::camera::device::V5_0::ISehCameraDevice::castFrom(interface);
+     android::sp<vendor::samsung::hardware::camera::device::V5_0::ISehCameraDevice> seh = sehCast;
+ 
++    auto sehCast2 = vendor::samsung::hardware::camera::device::V4_0::ISehCameraDevice::castFrom(interface);
++    android::sp<vendor::samsung::hardware::camera::device::V4_0::ISehCameraDevice> seh2 = sehCast2;
++
+     Status s;
+     if(seh != nullptr) {
+         s = seh->sehSetTorchModeStrength(enabled ? TorchMode::ON : TorchMode::OFF, flashStrength);
++    } else if(seh2 != nullptr) {
++        s = seh2->sehSetTorchModeStrength(enabled ? TorchMode::ON : TorchMode::OFF, flashStrength);
+     } else {
+         s = interface->setTorchMode(enabled ? TorchMode::ON : TorchMode::OFF);
+     }
+-- 
+2.25.1
+

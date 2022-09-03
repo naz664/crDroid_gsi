@@ -1,0 +1,54 @@
+From 81418f3c1a265b61e0270b32967852ba081a925f Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Sun, 13 Mar 2022 09:55:13 +0000
+Subject: [PATCH 1/2] Revert "CompositionEngine: Request device composition for
+ the Udfps touched layer"
+
+This reverts commit e7c8c0f84fd866f98a3347c3547f23f1d7434e36.
+---
+ .../CompositionEngine/src/Output.cpp              | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
+
+diff --git a/services/surfaceflinger/CompositionEngine/src/Output.cpp b/services/surfaceflinger/CompositionEngine/src/Output.cpp
+index 80e7f044fd..95ae5e514e 100644
+--- a/services/surfaceflinger/CompositionEngine/src/Output.cpp
++++ b/services/surfaceflinger/CompositionEngine/src/Output.cpp
+@@ -22,7 +22,6 @@
+ #include <compositionengine/LayerFE.h>
+ #include <compositionengine/LayerFECompositionState.h>
+ #include <compositionengine/RenderSurface.h>
+-#include <compositionengine/UdfpsExtension.h>
+ #include <compositionengine/impl/Output.h>
+ #include <compositionengine/impl/OutputCompositionState.h>
+ #include <compositionengine/impl/OutputLayer.h>
+@@ -782,10 +781,7 @@ void Output::writeCompositionState(const compositionengine::CompositionRefreshAr
+ 
+ compositionengine::OutputLayer* Output::findLayerRequestingBackgroundComposition() const {
+     compositionengine::OutputLayer* layerRequestingBgComposition = nullptr;
+-    for (size_t i = 0; i < getOutputLayerCount(); i++) {
+-        compositionengine::OutputLayer* layer = getOutputLayerOrderedByZByIndex(i);
+-        compositionengine::OutputLayer* nextLayer = getOutputLayerOrderedByZByIndex(i + 1);
+-
++    for (auto* layer : getOutputLayersOrderedByZ()) {
+         auto* compState = layer->getLayerFE().getCompositionState();
+ 
+         // If any layer has a sideband stream, we will disable blurs. In that case, we don't
+@@ -799,15 +795,6 @@ compositionengine::OutputLayer* Output::findLayerRequestingBackgroundComposition
+         if (compState->backgroundBlurRadius > 0 || compState->blurRegions.size() > 0) {
+             layerRequestingBgComposition = layer;
+         }
+-
+-        // If the next layer is the Udfps touched layer, enable client composition for it
+-        // because that somehow leads to the Udfps touched layer getting device composition
+-        // consistently.
+-        if ((nextLayer != nullptr && layerRequestingBgComposition == nullptr) &&
+-                (strcmp(nextLayer->getLayerFE().getDebugName(), UDFPS_TOUCHED_LAYER_NAME) == 0)) {
+-            layerRequestingBgComposition = layer;
+-            break;
+-        }
+     }
+     return layerRequestingBgComposition;
+ }
+-- 
+2.25.1
+
