@@ -1,0 +1,112 @@
+From dd9bb82dddfdd41e6c5666a80dd741ad2a0fe03d Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Sat, 3 Sep 2022 15:07:07 +0000
+Subject: [PATCH] Samsung-Xiaomi-new-FOD-HBM-controls.patch
+
+---
+ services/surfaceflinger/BufferQueueLayer.cpp  | 18 +++++++++--
+ .../CompositionEngine/src/OutputLayer.cpp     | 31 +++++++++++++++++++
+ 2 files changed, 47 insertions(+), 2 deletions(-)
+
+diff --git a/services/surfaceflinger/BufferQueueLayer.cpp b/services/surfaceflinger/BufferQueueLayer.cpp
+index 8c404aca3a..59add305c1 100644
+--- a/services/surfaceflinger/BufferQueueLayer.cpp
++++ b/services/surfaceflinger/BufferQueueLayer.cpp
+@@ -28,7 +28,7 @@
+ #include <compositionengine/UdfpsExtension.h>
+ #include <gui/BufferQueueConsumer.h>
+ #include <system/window.h>
+-
++#include <cutils/properties.h>
+ #include "LayerRejecter.h"
+ #include "SurfaceInterceptor.h"
+ 
+@@ -36,6 +36,14 @@
+ #include "Scheduler/LayerHistory.h"
+ #include "TimeStats/TimeStats.h"
+ 
++static bool sCheckedProps = false;
++static bool sSamsungFod = false;
++static void init_fod_props() {
++    if(sCheckedProps) return;
++    sCheckedProps = true;
++    sSamsungFod = property_get_bool("persist.sys.phh.fod.samsung", false);
++}
++
+ namespace android {
+ using PresentState = frametimeline::SurfaceFrame::PresentState;
+ 
+@@ -506,7 +514,13 @@ void BufferQueueLayer::onFirstRef() {
+     mConsumer =
+             mFlinger->getFactory().createBufferLayerConsumer(consumer, mFlinger->getRenderEngine(),
+                                                              mTextureName, this);
+-    mConsumer->setConsumerUsageBits(getEffectiveUsage(0));
++    init_fod_props();
++    uint64_t usageBits = getEffectiveUsage(0);
++    if(sSamsungFod && strstr(mName.c_str(), "Fingerprint on display.touched") != nullptr) {
++        ALOGE("Found on touched layer!");
++        usageBits |= 0x400000000LL;
++    }
++    mConsumer->setConsumerUsageBits(usageBits);
+ 
+     mContentsChangedListener = new ContentsChangedListener(this);
+     mConsumer->setContentsChangedListener(mContentsChangedListener);
+diff --git a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+index 87be750569..35c08e96fb 100644
+--- a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
++++ b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
+@@ -25,6 +25,7 @@
+ #include <compositionengine/impl/OutputLayer.h>
+ #include <compositionengine/impl/OutputLayerCompositionState.h>
+ #include <cstdint>
++#include <cutils/properties.h>
+ 
+ // TODO(b/129481165): remove the #pragma below and fix conversion issues
+ #pragma clang diagnostic push
+@@ -35,6 +36,10 @@
+ // TODO(b/129481165): remove the #pragma below and fix conversion issues
+ #pragma clang diagnostic pop // ignored "-Wconversion"
+ 
++static bool sCheckedProps = false;
++static bool sBBKFod = false;
++static bool sXiaomiFod = false;
++
+ namespace android::compositionengine {
+ 
+ OutputLayer::~OutputLayer() = default;
+@@ -406,6 +411,32 @@ void OutputLayer::writeOutputDependentGeometryStateToHWC(HWC2::Layer* hwcLayer,
+               sourceCrop.bottom, to_string(error).c_str(), static_cast<int32_t>(error));
+     }
+ 
++    if(!sCheckedProps) {
++        sCheckedProps = true;
++        sBBKFod = property_get_bool("persist.sys.phh.fod.bbk", false);
++        sXiaomiFod = property_get_bool("persist.sys.phh.fod.xiaomi", false);
++    }
++
++   if(strstr(getLayerFE().getDebugName(), "Fingerprint on display") != nullptr) {
++        ALOGE("Found fingerprint on display!");
++        z = 0x41000031;
++   if(sBBKFod) {
++            z = 0x41000031;
++        } else if(sXiaomiFod) {
++            z |= 0x1000000;
++        }
++    }
++
++    if(strstr(getLayerFE().getDebugName(), "Fingerprint on display.touched") != nullptr) {
++        ALOGE("Found fingerprint on display touched!");
++        z = 0x41000033;
++        if(sBBKFod) {
++            z = 0x41000033;
++        } else if(sXiaomiFod) {
++            z |= 0x2000000;
++        }
++        z = 0x41000033;
++    }
+ 
+     uint32_t z_udfps = z;
+     if ((strcmp(getLayerFE().getDebugName(), UDFPS_LAYER_NAME) == 0)
+-- 
+2.25.1
+

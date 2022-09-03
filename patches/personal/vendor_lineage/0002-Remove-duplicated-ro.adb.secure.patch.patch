@@ -1,0 +1,35 @@
+From 856bc6799e36180edfc022fdf3cc1d424c58f716 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Sat, 3 Sep 2022 15:00:53 +0000
+Subject: [PATCH 2/2] Remove duplicated ro.adb.secure.patch
+
+---
+ config/common.mk | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/config/common.mk b/config/common.mk
+index 2055d146..7ffb5741 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -21,7 +21,7 @@ ifneq ($(TARGET_BUILD_VARIANT),user)
+ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
+ else
+ # Enable ADB authentication
+-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=1
++#PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=1
+ endif
+ 
+ ifneq ($(TARGET_BUILD_VARIANT),eng)
+@@ -233,3 +233,9 @@ endif
+ 
+ -include $(WORKSPACE)/build_env/image-auto-bits.mk
+ -include vendor/lineage/config/partner_gms.mk
++
++TARGET_NO_KERNEL_OVERRIDE := true
++
++# Enable support of one-handed mode
++PRODUCT_PRODUCT_PROPERTIES += \
++    ro.support_one_handed_mode=true
+-- 
+2.25.1
+
