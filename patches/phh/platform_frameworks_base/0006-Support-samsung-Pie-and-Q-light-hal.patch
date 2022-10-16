@@ -1,7 +1,7 @@
-From ec179f8556f722238e94ddd7324f90b5f6102871 Mon Sep 17 00:00:00 2001
+From d9fa9b2d639b6f6889508731b3e3b51d4c45e784 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 24 Mar 2019 23:05:14 +0100
-Subject: [PATCH 06/35] Support samsung Pie and Q light hal
+Subject: [PATCH 06/34] Support samsung Pie and Q light hal
 
 Change-Id: I01f94acd7d0672733e48854d80368f9ac6f861c6
 ---
@@ -23,10 +23,10 @@ index 53401fd47178..59256cc73df1 100644
  
      static_libs: [
 diff --git a/services/core/jni/com_android_server_lights_LightsService.cpp b/services/core/jni/com_android_server_lights_LightsService.cpp
-index 26f6d7428fcc..268b59a58010 100644
+index 35d8219651d7..b45b2137d0e6 100644
 --- a/services/core/jni/com_android_server_lights_LightsService.cpp
 +++ b/services/core/jni/com_android_server_lights_LightsService.cpp
-@@ -22,6 +22,10 @@
+@@ -23,6 +23,10 @@
  
  #include <android/hardware/light/2.0/ILight.h>
  #include <android/hardware/light/2.0/types.h>
@@ -37,7 +37,7 @@ index 26f6d7428fcc..268b59a58010 100644
  #include <android-base/chrono_utils.h>
  #include <utils/misc.h>
  #include <utils/Log.h>
-@@ -39,8 +43,17 @@ using Type       = ::android::hardware::light::V2_0::Type;
+@@ -40,8 +44,17 @@ using Type       = ::android::hardware::light::V2_0::Type;
  template<typename T>
  using Return     = ::android::hardware::Return<T>;
  
@@ -55,8 +55,8 @@ index 26f6d7428fcc..268b59a58010 100644
  static bool validate(jint light, jint flash, jint brightness) {
      bool valid = true;
  
-@@ -141,6 +154,44 @@ static void setLight_native(
-         return;
+@@ -152,6 +165,44 @@ static void setLight_native(
+         colorARGB = (colorAlpha << 24) + (colorARGB & 0x00FFFFFF);
      }
  
 +    if(!sSecTried) {

@@ -1,4 +1,4 @@
-From 53697db0dbbbc7f333d6fe59abac5440e957255d Mon Sep 17 00:00:00 2001
+From a4877baf04cab3ea39e6cfb07dca5f192c00b4c6 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Tue, 5 Apr 2022 15:07:37 -0400
 Subject: [PATCH 21/23] Next level of force disable a2dp offload: erase all

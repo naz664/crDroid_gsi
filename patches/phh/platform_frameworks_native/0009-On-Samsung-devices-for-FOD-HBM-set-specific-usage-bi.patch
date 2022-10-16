@@ -1,4 +1,4 @@
-From 92481176f29272a203d2cfcd8b9dfc27bbadc60c Mon Sep 17 00:00:00 2001
+From 9c4d22dda7532f5eab4672c689e697e661ed7516 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Fri, 17 Dec 2021 17:18:20 -0500
 Subject: [PATCH 09/16] On Samsung devices for FOD HBM, set specific usage bits
@@ -53,10 +53,10 @@ index f034642681..f9a52e48ee 100644
      static int32_t id = 0;
      mName = name + "#" + std::to_string(id);
 diff --git a/libs/ui/Gralloc2.cpp b/libs/ui/Gralloc2.cpp
-index 040a62b542..a9c74858ea 100644
+index 224caf7216..c543b4e60e 100644
 --- a/libs/ui/Gralloc2.cpp
 +++ b/libs/ui/Gralloc2.cpp
-@@ -108,7 +108,7 @@ status_t Gralloc2Mapper::validateBufferDescriptorInfo(
+@@ -115,7 +115,7 @@ status_t Gralloc2Mapper::validateBufferDescriptorInfo(
      if (descriptorInfo->usage & ~validUsageBits) {
          ALOGE("buffer descriptor contains invalid usage bits 0x%" PRIx64,
                descriptorInfo->usage & ~validUsageBits);
@@ -66,10 +66,10 @@ index 040a62b542..a9c74858ea 100644
      return NO_ERROR;
  }
 diff --git a/libs/ui/Gralloc3.cpp b/libs/ui/Gralloc3.cpp
-index 882674f479..330caf4302 100644
+index 4a8a4d09d3..4b1c974db1 100644
 --- a/libs/ui/Gralloc3.cpp
 +++ b/libs/ui/Gralloc3.cpp
-@@ -99,7 +99,7 @@ status_t Gralloc3Mapper::validateBufferDescriptorInfo(
+@@ -106,7 +106,7 @@ status_t Gralloc3Mapper::validateBufferDescriptorInfo(
      if (descriptorInfo->usage & ~validUsageBits) {
          ALOGE("buffer descriptor contains invalid usage bits 0x%" PRIx64,
                descriptorInfo->usage & ~validUsageBits);
@@ -79,10 +79,10 @@ index 882674f479..330caf4302 100644
      return NO_ERROR;
  }
 diff --git a/libs/ui/Gralloc4.cpp b/libs/ui/Gralloc4.cpp
-index 80f6c82bb0..1bda8332f9 100644
+index 499bc2c734..70ac43ac2c 100644
 --- a/libs/ui/Gralloc4.cpp
 +++ b/libs/ui/Gralloc4.cpp
-@@ -109,7 +109,7 @@ status_t Gralloc4Mapper::validateBufferDescriptorInfo(
+@@ -116,7 +116,7 @@ status_t Gralloc4Mapper::validateBufferDescriptorInfo(
      if (descriptorInfo->usage & ~validUsageBits) {
          ALOGE("buffer descriptor contains invalid usage bits 0x%" PRIx64,
                descriptorInfo->usage & ~validUsageBits);

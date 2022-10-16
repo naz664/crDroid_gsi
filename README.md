@@ -1,8 +1,5 @@
 # crDroid_patches
 Patches for building crDroid gsi
-(WIP)
-
-
 
 ## Credits
 These people have helped this project in some way or another, so they should be the ones who receive all the credit:
@@ -14,4 +11,4 @@ These people have helped this project in some way or another, so they should be 
 - [ChonDoit](https://github.com/ChonDoit)
 
 
-# Download :- [Here](https://sourceforge.net/projects/gsi-projects/files/v415-Sep/crDroid-8.9/)
+# Download :- [Here](https://sourceforge.net/projects/gsi-projects/files/A12.1/crDroid-8.10/16102022)

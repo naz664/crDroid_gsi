@@ -1,4 +1,4 @@
-From 349728276eabf30aeb3f44d91dd4aa4e5cb1dc71 Mon Sep 17 00:00:00 2001
+From 01b912959acd48430696fa7c93ae86271c12c99b Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 7 Jun 2021 17:09:13 -0400
 Subject: [PATCH 3/5] Add a property to disable eSCO
@@ -11,7 +11,7 @@ is ongoing, this will help the investigation.
  1 file changed, 5 insertions(+)
 
 diff --git a/hci/src/hci_packet_parser.cc b/hci/src/hci_packet_parser.cc
-index 06964c357..c65f0c2a0 100644
+index 06964c3571..c65f0c2a03 100644
 --- a/hci/src/hci_packet_parser.cc
 +++ b/hci/src/hci_packet_parser.cc
 @@ -107,6 +107,11 @@ static void parse_read_local_supported_commands_response(
@@ -27,5 +27,5 @@ index 06964c357..c65f0c2a0 100644
  }
  
 -- 
-2.25.1
+2.29.2
 

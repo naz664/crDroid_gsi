@@ -1,4 +1,4 @@
-From bb90e1c59f4a83f9d9d11abe04894f38a2a57409 Mon Sep 17 00:00:00 2001
+From 08e1bdd47e599f4ac0e556676c934d344a11db0d Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 25 May 2020 21:25:12 +0200
 Subject: [PATCH 2/5] Add persist.sys.phh.disable_a2dp_offload property to
@@ -10,7 +10,7 @@ Subject: [PATCH 2/5] Add persist.sys.phh.disable_a2dp_offload property to
  2 files changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/btif/src/btif_av.cc b/btif/src/btif_av.cc
-index 50717d9eb..7603ae262 100644
+index 50717d9eb4..7603ae2626 100644
 --- a/btif/src/btif_av.cc
 +++ b/btif/src/btif_av.cc
 @@ -973,9 +973,14 @@ bt_status_t BtifAvSource::Init(
@@ -30,7 +30,7 @@ index 50717d9eb..7603ae262 100644
    callbacks_ = callbacks;
    if (a2dp_offload_enabled_) {
 diff --git a/stack/a2dp/a2dp_codec_config.cc b/stack/a2dp/a2dp_codec_config.cc
-index a90c88108..e95d358f6 100644
+index a90c881087..e95d358f67 100644
 --- a/stack/a2dp/a2dp_codec_config.cc
 +++ b/stack/a2dp/a2dp_codec_config.cc
 @@ -571,13 +571,18 @@ bool A2dpCodecs::init() {
@@ -63,5 +63,5 @@ index a90c88108..e95d358f6 100644
  
  A2dpCodecConfig* A2dpCodecs::findSourceCodecConfig(
 -- 
-2.25.1
+2.29.2
 

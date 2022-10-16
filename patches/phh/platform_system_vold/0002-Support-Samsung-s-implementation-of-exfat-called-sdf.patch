@@ -1,4 +1,4 @@
-From 9a3de828e5c603db13f059609e4283f31bf196e8 Mon Sep 17 00:00:00 2001
+From cc8870fbad8382da092438af78381fac9bbee251 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 20 Aug 2018 22:37:54 +0200
 Subject: [PATCH 2/7] Support Samsung's implementation of exfat, called sdfat
@@ -8,7 +8,7 @@ Subject: [PATCH 2/7] Support Samsung's implementation of exfat, called sdfat
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/fs/Exfat.cpp b/fs/Exfat.cpp
-index 7782dd3..91a4c50 100644
+index 7782dd3b..91a4c50d 100644
 --- a/fs/Exfat.cpp
 +++ b/fs/Exfat.cpp
 @@ -35,7 +35,7 @@ static const char* kFsckPath = "/system/bin/fsck.exfat";

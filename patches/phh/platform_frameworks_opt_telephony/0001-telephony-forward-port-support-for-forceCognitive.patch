@@ -1,4 +1,4 @@
-From b5ee64d04116f61bd556c1180d80e343b18d4509 Mon Sep 17 00:00:00 2001
+From b5fd6bb53c710116c5138393a827117f3f02024c Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 13 Oct 2019 17:21:31 +0800
 Subject: [PATCH 1/5] telephony: forward-port support for forceCognitive

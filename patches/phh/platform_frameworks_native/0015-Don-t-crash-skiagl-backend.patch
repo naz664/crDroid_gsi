@@ -1,4 +1,4 @@
-From dbe26ed8e0318ad79688ac67e9e84b446b982f67 Mon Sep 17 00:00:00 2001
+From 4d446805fba2b6696fa2524daee9585597b853cb Mon Sep 17 00:00:00 2001
 From: Alec Mouri <alecmouri@google.com>
 Date: Fri, 12 Nov 2021 12:13:20 -0800
 Subject: [PATCH 15/16] Don't crash skiagl backend.
@@ -12,13 +12,11 @@ renderengine type properly to implementations.
 Bug: 205591213
 Bug: 196334700
 Bug: 193212592
-Bug: 220650195
 Test: `adb shell stop; adb shell setprop debug.renderengine.backend
 skiagl; adb shell start` boots
 
 Change-Id: I455d5d613ccaa210dc748969e025dc86c78080b8
 Merged-In: I455d5d613ccaa210dc748969e025dc86c78080b8
-(cherry picked from commit 71dabbb3d6ec1606a49d3c8e4dd9ebd444d9323e)
 ---
  libs/renderengine/RenderEngine.cpp            | 36 ++++++-------------
  .../include/renderengine/RenderEngine.h       |  2 +-

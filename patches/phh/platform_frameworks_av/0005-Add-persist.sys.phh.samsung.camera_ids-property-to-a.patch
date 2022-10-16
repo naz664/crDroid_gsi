@@ -1,4 +1,4 @@
-From 7f3753e9a9157fdbdceeb9fb6188634231f6f304 Mon Sep 17 00:00:00 2001
+From c8a3d642465a97ca862de7840ddc7522ed13037d Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Thu, 14 May 2020 19:54:55 +0200
 Subject: [PATCH 05/23] Add persist.sys.phh.samsung.camera_ids property to
@@ -23,7 +23,7 @@ index 26562e0426..e940c33845 100644
      ],
  
 diff --git a/services/camera/libcameraservice/common/CameraProviderManager.cpp b/services/camera/libcameraservice/common/CameraProviderManager.cpp
-index 2f74df9770..79f11a75ab 100644
+index 0cce2cad91..52c78a4695 100644
 --- a/services/camera/libcameraservice/common/CameraProviderManager.cpp
 +++ b/services/camera/libcameraservice/common/CameraProviderManager.cpp
 @@ -21,6 +21,7 @@

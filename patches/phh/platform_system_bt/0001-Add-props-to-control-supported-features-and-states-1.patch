@@ -1,4 +1,4 @@
-From 69ebde053b62ee0ad0fc79fad26cda274f1d737c Mon Sep 17 00:00:00 2001
+From fd05778417027b87e72374e5ce357537c483f2c1 Mon Sep 17 00:00:00 2001
 From: penn5 <penn5@users.noreply.github.com>
 Date: Mon, 4 Mar 2019 22:21:07 +0000
 Subject: [PATCH 1/5] Add props to control supported features and states (#1)
@@ -25,7 +25,7 @@ Change-Id: I418aa605786153df4fdc544067ece59c12feccbf
  1 file changed, 56 insertions(+)
 
 diff --git a/hci/src/hci_packet_parser.cc b/hci/src/hci_packet_parser.cc
-index 6bd6a5233..06964c357 100644
+index 6bd6a52335..06964c3571 100644
 --- a/hci/src/hci_packet_parser.cc
 +++ b/hci/src/hci_packet_parser.cc
 @@ -27,6 +27,8 @@
@@ -130,5 +130,5 @@ index 6bd6a5233..06964c357 100644
  }
  
 -- 
-2.25.1
+2.29.2
 

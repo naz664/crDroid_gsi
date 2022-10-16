@@ -1,4 +1,4 @@
-From 5a2aedbf8e8f7585a477573a7993ad8ac7a18ac2 Mon Sep 17 00:00:00 2001
+From 85cf7e3aa2da8ba9693d77ccb08c7f400bd0185f Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Tue, 10 Mar 2020 23:26:55 +0100
 Subject: [PATCH 02/16] Use BKK's hwcomposer hacks to properly display FOD

@@ -1,0 +1,24 @@
+From 1d4883e77cddaff9adf2985116cda8808075cf22 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Sun, 16 Oct 2022 12:21:12 +0000
+Subject: [PATCH] Allow disabling of fingerprint cleanups
+
+---
+ .../biometrics/sensors/fingerprint/hidl/Fingerprint21.java       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java b/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
+index 28d130bafab9..131d749e9765 100644
+--- a/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
++++ b/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
+@@ -705,6 +705,7 @@ public class Fingerprint21 implements IHwBinder.DeathRecipient, ServiceProvider
+ 
+     private void scheduleInternalCleanup(int userId,
+             @Nullable BaseClientMonitor.Callback callback) {
++    final boolean mNocleanup = android.os.SystemProperties.getBoolean("persist.sys.phh.fingerprint.nocleanup", false);
+         if (!mCleanup) {
+             return;
+         }
+-- 
+2.25.1
+

@@ -1,0 +1,24 @@
+From e3aaba55ee98ad1914f46590292bb0f017bc3149 Mon Sep 17 00:00:00 2001
+From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
+Date: Mon, 10 Jan 2022 03:31:18 +0000
+Subject: [PATCH] Report SCO sample rate by default
+
+Change-Id: I12c14e2206f5dc20fefe30a2197798773a894988
+---
+ res/values/config.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 42ecca47f..952b96510 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -136,5 +136,5 @@
+     <bool name="enable_gd_up_to_scanning_layer">false</bool>
+ 
+     <!-- If true, SCO sample rate will be reported via g_sco_samplerate audio parameter -->
+-    <bool name="sco_report_samplerate">false</bool>
++    <bool name="sco_report_samplerate">true</bool>
+ </resources>
+-- 
+2.25.1
+

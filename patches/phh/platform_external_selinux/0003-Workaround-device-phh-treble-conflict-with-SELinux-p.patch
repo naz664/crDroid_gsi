@@ -1,4 +1,4 @@
-From 8f2b35faf91afb1b86457e704e2e9d4da6d03344 Mon Sep 17 00:00:00 2001
+From 357d0c61451ab507248697d1b2327f6204884b78 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 31 Mar 2021 23:32:37 +0200
 Subject: [PATCH 3/8] Workaround device/phh/treble conflict with SELinux policy
@@ -10,6 +10,8 @@ typealias.
 Type and typealias are fundamentally not mergeable.
 Luckily, Samsung doesn't do anything with those typealias, so we can
 simply ignore them.
+
+Change-Id: I52938703c1c39de8f881c98c82cfbf5a04d96cf7
 ---
  libsepol/cil/src/cil_binary.c      |  8 ++++++--
  libsepol/cil/src/cil_build_ast.c   | 15 +++++++++++----
@@ -49,7 +51,7 @@ index 03d53e1f..160fd0e0 100644
  	return rc;
  }
 diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index 307b1ee3..94d55d7f 100644
+index 307b1ee3..aaec0a9b 100644
 --- a/libsepol/cil/src/cil_build_ast.c
 +++ b/libsepol/cil/src/cil_build_ast.c
 @@ -108,7 +108,7 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
@@ -76,7 +78,7 @@ index 307b1ee3..94d55d7f 100644
 -				goto exit;
 +                if(
 +                        strcmp(key, "sysfs_usb_supply") == 0 ||
-+                        strcmp(key, "hostapd") == 0 || 
++                        strcmp(key, "hostapd") == 0 ||
 +                        strcmp(key, "rpmb_device") == 0) {
 +                    cil_log(CIL_ERR, "Ignoring...");
 +                } else {

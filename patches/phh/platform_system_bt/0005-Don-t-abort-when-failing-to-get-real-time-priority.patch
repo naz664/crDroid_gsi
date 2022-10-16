@@ -1,4 +1,4 @@
-From d608ee09645c451a17ac5956dbf5cd3a4f853558 Mon Sep 17 00:00:00 2001
+From 969b5a218adbed842d76b3ff195a3cafbeed7c1d Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 17 Oct 2021 17:17:13 -0400
 Subject: [PATCH 5/5] Don't abort when failing to get real-time priority
@@ -20,7 +20,7 @@ Change-Id: Id25dac186628e933185bdfd640498004459b375a
  5 files changed, 14 insertions(+), 5 deletions(-)
 
 diff --git a/btif/src/btif_a2dp_sink.cc b/btif/src/btif_a2dp_sink.cc
-index fa02a8682..9610720db 100644
+index fa02a8682d..9610720db5 100644
 --- a/btif/src/btif_a2dp_sink.cc
 +++ b/btif/src/btif_a2dp_sink.cc
 @@ -192,7 +192,7 @@ bool btif_a2dp_sink_init() {
@@ -33,7 +33,7 @@ index fa02a8682..9610720db 100644
    }
    btif_a2dp_sink_cb.worker_thread.DoInThread(
 diff --git a/btif/src/btif_a2dp_source.cc b/btif/src/btif_a2dp_source.cc
-index 19bf998ab..57b665af7 100644
+index 19bf998ab2..57b665af7a 100644
 --- a/btif/src/btif_a2dp_source.cc
 +++ b/btif/src/btif_a2dp_source.cc
 @@ -358,7 +358,7 @@ bool btif_a2dp_source_startup(void) {
@@ -46,7 +46,7 @@ index 19bf998ab..57b665af7 100644
    if (!bluetooth::audio::a2dp::init(&btif_a2dp_source_thread)) {
      if (btif_av_is_a2dp_offload_enabled()) {
 diff --git a/hci/src/hci_layer.cc b/hci/src/hci_layer.cc
-index 1cd3a49a3..860be0446 100644
+index 1cd3a49a39..860be04460 100644
 --- a/hci/src/hci_layer.cc
 +++ b/hci/src/hci_layer.cc
 @@ -234,7 +234,6 @@ static future_t* hci_module_start_up(void) {
@@ -58,7 +58,7 @@ index 1cd3a49a3..860be0446 100644
  
    commands_pending_response = list_new(NULL);
 diff --git a/osi/src/alarm.cc b/osi/src/alarm.cc
-index 6e5d22f43..6f6c7a424 100644
+index 6e5d22f43e..6f6c7a4248 100644
 --- a/osi/src/alarm.cc
 +++ b/osi/src/alarm.cc
 @@ -678,7 +678,17 @@ static bool timer_create_internal(const clockid_t clock_id, timer_t* timer) {
@@ -81,7 +81,7 @@ index 6e5d22f43..6f6c7a424 100644
                strerror(errno));
      if (clock_id == CLOCK_BOOTTIME_ALARM) {
 diff --git a/stack/btu/btu_task.cc b/stack/btu/btu_task.cc
-index 5e83e4d07..33e7264fd 100644
+index 5e83e4d07e..33e7264fdb 100644
 --- a/stack/btu/btu_task.cc
 +++ b/stack/btu/btu_task.cc
 @@ -121,7 +121,7 @@ void main_thread_start_up() {
@@ -94,5 +94,5 @@ index 5e83e4d07..33e7264fd 100644
  }
  
 -- 
-2.25.1
+2.29.2
 

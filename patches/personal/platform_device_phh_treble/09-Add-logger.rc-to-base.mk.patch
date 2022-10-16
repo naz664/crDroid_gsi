@@ -1,0 +1,62 @@
+From 54329093dc0707e260049fa443f15b2caad1fe8e Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Sun, 16 Oct 2022 11:28:18 +0000
+Subject: [PATCH] Add logger.rc to base.mk
+
+---
+ base.mk   |  7 +++----
+ logger.rc | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+ create mode 100644 logger.rc
+
+diff --git a/base.mk b/base.mk
+index 66ba856..1b7a8a0 100644
+--- a/base.mk
++++ b/base.mk
+@@ -36,6 +36,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+ PRODUCT_COPY_FILES += \
+ 	device/phh/treble/vndk-detect:system/bin/vndk-detect \
+ 	device/phh/treble/vndk.rc:system/etc/init/vndk.rc \
++        device/phh/treble/logger.rc:system/etc/init/logger.rc \
+ 
+ #USB Audio
+ PRODUCT_COPY_FILES += \
+@@ -261,12 +262,10 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
+ PRODUCT_PACKAGES += \
+     GCamGOPrebuilt
+ 
+-PRODUCT_PACKAGES += \
+-    Dialer
+-
+ PRODUCT_PACKAGES += \
+     libaptX_encoder \
+     libaptXHD_encoder
+ 
++#prebuilts
+ PRODUCT_PACKAGES += \
+-    Gallery
++  OpenEUICC \
+diff --git a/logger.rc b/logger.rc
+new file mode 100644
+index 0000000..4a37279
+--- /dev/null
++++ b/logger.rc
+@@ -0,0 +1,15 @@
++service logger /system/bin/logcat -b all -D -f /cache/boot_log.txt
++    class main
++    user root
++    group root system
++    disabled
++    oneshot
++
++on post-fs-data
++    # Clear existing log and start the service
++    rm /cache/boot_log.txt
++    start logger
++
++on property:sys.boot_completed=1
++    # Stop the logger service
++    stop logger
+-- 
+2.25.1
+

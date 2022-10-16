@@ -1,0 +1,52 @@
+From 998ede7204818d84e5512f6342eb27a521dc2314 Mon Sep 17 00:00:00 2001
+From: Diogo Correia <me@diogotc.com>
+Date: Sat, 17 Sep 2022 12:24:52 +0100
+Subject: [PATCH 17/17] Fix memory leak on "Try to fallback mCallingSid to getpidcon"
+
+Also fixes styling to stay consistent with the rest of the file.
+
+Fixes issue https://github.com/phhusson/treble_experimentations/issues/2410
+Commit 53b95fca57d2325fd517340dac2e924d420fa8a3 introduced this memory leak.
+---
+ libs/binder/IPCThreadState.cpp | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/libs/binder/IPCThreadState.cpp b/libs/binder/IPCThreadState.cpp
+index 0e4d0df9ce..65dc182b03 100644
+--- a/libs/binder/IPCThreadState.cpp
++++ b/libs/binder/IPCThreadState.cpp
+@@ -1273,12 +1273,12 @@ status_t IPCThreadState::executeCommand(int32_t cmd)
+             // This is recoding libselinux's getpidcon()
+             // We are in a NDK lib, so we need to keep changes to a minimum
+             bool allocatedSid = false;
+-            if(mCallingSid == nullptr && mCallingPid != 0) {
++            if (mCallingSid == nullptr && mCallingPid != 0) {
+                 char buf[4096];
+                 char *path = NULL;
+                 (void)asprintf(&path, "/proc/%d/attr/current", mCallingPid);
+                 int fd = open(path, O_RDONLY | O_CLOEXEC);
+-                if(fd != -1) {
++                if (fd != -1) {
+                     int readRet = read(fd, buf, sizeof(buf)-1);
+                     if(readRet != -1) {
+                         buf[readRet] = 0;
+@@ -1287,6 +1287,7 @@ status_t IPCThreadState::executeCommand(int32_t cmd)
+                     }
+                     close(fd);
+                 }
++                free(path);
+             }
+ 
+             // ALOGI(">>>> TRANSACT from pid %d sid %s uid %d\n", mCallingPid,
+@@ -1353,7 +1354,7 @@ status_t IPCThreadState::executeCommand(int32_t cmd)
+ 
+             mServingStackPointer = origServingStackPointer;
+             mCallingPid = origPid;
+-	    if(allocatedSid) free((void*)mCallingSid);
++            if (allocatedSid) free((void*)mCallingSid);
+             mCallingSid = origSid;
+             mCallingUid = origUid;
+             mStrictModePolicy = origStrictModePolicy;
+-- 
+2.34.1
+

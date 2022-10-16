@@ -1,4 +1,4 @@
-From 32a9b1cc395227f4d7d819eebaf315d521797458 Mon Sep 17 00:00:00 2001
+From 3e0a225a2266e7096a0dd7265614a57bac20baba Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 27 Oct 2021 14:40:26 -0400
 Subject: [PATCH] Disable vndklite handling
@@ -22,5 +22,5 @@ index 82801f3..e05341b 100644
  
  bool IsVndkInSystemNamespace() {
 -- 
-2.25.1
+2.29.2
 
