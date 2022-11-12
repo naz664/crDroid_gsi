@@ -1,0 +1,40 @@
+From fc5925c9c8b5f9afe0c7ee673d994cac99277c15 Mon Sep 17 00:00:00 2001
+From: Peter Cai <peter@typeblog.net>
+Date: Fri, 2 Sep 2022 21:36:06 -0400
+Subject: [PATCH 10/32] FrameworkParsingPackageUtils: Add glob matching support
+ for properties
+
+This is now required in addition to the one in PackageParser in order
+for overlays to work.
+
+Change-Id: Ie8679c0ffe03cead4a68bd2d0eb429f05af2d417
+---
+ .../pm/parsing/FrameworkParsingPackageUtils.java     | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java b/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
+index 3e1c5bb3d7ec..f15978c57574 100644
+--- a/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
++++ b/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
+@@ -215,8 +215,16 @@ public class FrameworkParsingPackageUtils {
+         for (int i = 0; i < propNames.length; i++) {
+             // Check property value: make sure it is both set and equal to expected value
+             final String currValue = SystemProperties.get(propNames[i]);
+-            if (!TextUtils.equals(currValue, propValues[i])) {
+-                return false;
++            if (propValues[i].startsWith("+") && propValues[i].endsWith("*")) {
++                // Glob matching
++                int idx = TextUtils.indexOf(currValue, propValues[i].substring(1, propValues[i].length() - 1));
++                if (idx < 0) {
++                    return false;
++                }
++            } else {
++                if (!TextUtils.equals(currValue, propValues[i])) {
++                    return false;
++                }
+             }
+         }
+         return true;
+-- 
+2.25.1
+

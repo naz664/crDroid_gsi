@@ -14,8 +14,5 @@ TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
 
 TARGET_FACE_UNLOCK_SUPPORTED := true
 
-PRODUCT_PACKAGES += \
-    libaptX_encoder \
-    libaptXHD_encoder
 
 

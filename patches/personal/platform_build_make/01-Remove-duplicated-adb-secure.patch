@@ -1,0 +1,36 @@
+From 1e0e164074db630f6988196499f7a57424dd3b02 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Fri, 11 Nov 2022 15:50:46 +0000
+Subject: [PATCH] Remove duplicated adb-secure
+
+---
+ core/main.mk | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/core/main.mk b/core/main.mk
+index 66b92d88d..aa77be9c1 100644
+--- a/core/main.mk
++++ b/core/main.mk
+@@ -368,10 +368,6 @@ ifneq (,$(user_variant))
+   ADDITIONAL_SYSTEM_PROPERTIES += ro.secure=1
+   ADDITIONAL_SYSTEM_PROPERTIES += security.perf_harden=1
+ 
+-  ifeq ($(user_variant),user)
+-    ADDITIONAL_SYSTEM_PROPERTIES += ro.adb.secure=1
+-  endif
+-
+   ifeq ($(user_variant),userdebug)
+     # Pick up some extra useful tools
+     tags_to_install += debug
+@@ -397,7 +393,7 @@ ifeq (true,$(strip $(enable_target_debugging)))
+   ADDITIONAL_SYSTEM_PROPERTIES += ro.debuggable=1
+ else # !enable_target_debugging
+   # Target is less debuggable and adbd is off by default
+-  ADDITIONAL_SYSTEM_PROPERTIES += ro.debuggable=0
++ # ADDITIONAL_SYSTEM_PROPERTIES += ro.debuggable=0
+ endif # !enable_target_debugging
+ 
+ ## eng ##
+-- 
+2.25.1
+
