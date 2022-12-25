@@ -1,0 +1,29 @@
+From b0db02be78051c365de224e5b42d8a31bc062b8b Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Wed, 21 Dec 2022 12:12:52 +0000
+Subject: [PATCH] Remove duplicated writeRilSendSms
+
+---
+ .../internal/telephony/metrics/TelephonyMetrics.java        | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/java/com/android/internal/telephony/metrics/TelephonyMetrics.java b/src/java/com/android/internal/telephony/metrics/TelephonyMetrics.java
+index e5524f03e7..b3dfb9c0aa 100644
+--- a/src/java/com/android/internal/telephony/metrics/TelephonyMetrics.java
++++ b/src/java/com/android/internal/telephony/metrics/TelephonyMetrics.java
+@@ -2329,9 +2329,9 @@ public class TelephonyMetrics {
+      * @param format SMS format. Either {@link SmsMessage#FORMAT_3GPP} or
+      *         {@link SmsMessage#FORMAT_3GPP2}.
+      */
+-    public void writeRilSendSms(int phoneId, int rilSerial, int tech, int format) {
+-    	writeRilSendSms(phoneId, rilSerial, tech, format, 0);
+-    }
++//    public void writeRilSendSms(int phoneId, int rilSerial, int tech, int format) {
++//    	writeRilSendSms(phoneId, rilSerial, tech, format, 0);
++//    }
+ 
+     /**
+      * Write Send SMS event (backwards-compatible method for R and earlier IMS implementations)
+-- 
+2.25.1
+
