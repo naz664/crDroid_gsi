@@ -1,0 +1,25 @@
+From 0cc4f23eda99f66d903725431daf4754882a4739 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Mon, 26 Dec 2022 08:46:48 +0000
+Subject: [PATCH] Force treble apk as the default updater
+
+---
+ .../settings/system/SystemUpdatePreferenceController.java       | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/com/android/settings/system/SystemUpdatePreferenceController.java b/src/com/android/settings/system/SystemUpdatePreferenceController.java
+index b2a22ff4a1..b12b67cdec 100644
+--- a/src/com/android/settings/system/SystemUpdatePreferenceController.java
++++ b/src/com/android/settings/system/SystemUpdatePreferenceController.java
+@@ -43,6 +43,8 @@ public class SystemUpdatePreferenceController extends BasePreferenceController {
+ 
+     private static final String TAG = "SysUpdatePrefContr";
+ 
++    private static final String OTA_APP_PACKAGE = "me.phh.treble.app";
++
+     private static final String KEY_SYSTEM_UPDATE_SETTINGS = "system_update_settings";
+ 
+     private final UserManager mUm;
+-- 
+2.25.1
+

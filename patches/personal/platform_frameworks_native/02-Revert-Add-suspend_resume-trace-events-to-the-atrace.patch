@@ -1,0 +1,43 @@
+From 855b8625b8fe1e9fdfbf8397b105e51570e9f1a8 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Thu, 22 Sep 2022 13:59:44 +0000
+Subject: [PATCH] Revert-Add-suspend_resume-trace-events-to-the-atrace
+
+---
+ cmds/atrace/atrace.cpp | 1 -
+ cmds/atrace/atrace.rc  | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/cmds/atrace/atrace.cpp b/cmds/atrace/atrace.cpp
+index 6fb9a4d112..f436992bd5 100644
+--- a/cmds/atrace/atrace.cpp
++++ b/cmds/atrace/atrace.cpp
+@@ -173,7 +173,6 @@ static const TracingCategory k_categories[] = {
+         { OPT,      "events/clk/clk_disable/enable" },
+         { OPT,      "events/clk/clk_enable/enable" },
+         { OPT,      "events/power/cpu_frequency_limits/enable" },
+-        { OPT,      "events/power/suspend_resume/enable" },
+         { OPT,      "events/cpuhp/cpuhp_enter/enable" },
+         { OPT,      "events/cpuhp/cpuhp_exit/enable" },
+         { OPT,      "events/cpuhp/cpuhp_pause/enable" },
+diff --git a/cmds/atrace/atrace.rc b/cmds/atrace/atrace.rc
+index 5267b0294c..284fff28c2 100644
+--- a/cmds/atrace/atrace.rc
++++ b/cmds/atrace/atrace.rc
+@@ -1,3 +1,4 @@
++
+ ## Permissions to allow system-wide tracing to the kernel trace buffer.
+ ##
+ on late-init
+@@ -65,8 +66,6 @@ on late-init
+     chmod 0666 /sys/kernel/tracing/events/power/gpu_frequency/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/power/gpu_work_period/enable
+     chmod 0666 /sys/kernel/tracing/events/power/gpu_work_period/enable
+-    chmod 0666 /sys/kernel/debug/tracing/events/power/suspend_resume/enable
+-    chmod 0666 /sys/kernel/tracing/events/power/suspend_resume/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/cpufreq_interactive/enable
+     chmod 0666 /sys/kernel/tracing/events/cpufreq_interactive/enable
+     chmod 0666 /sys/kernel/debug/tracing/events/vmscan/mm_vmscan_direct_reclaim_begin/enable
+-- 
+2.25.1
+

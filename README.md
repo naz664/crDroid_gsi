@@ -1,5 +1,5 @@
 # crDroid_patches
-Patches for building crDroid gsi (WIP)
+Patches for building crDroid gsi
 
 ## Credits
 These people have helped this project in some way or another, so they should be the ones who receive all the credit:
