@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+<remote name="phh" fetch="https://github.com/phhusson/" />
+<remote name="naz" fetch="https://github.com/naz664/" />
+<remote name="gitlab" fetch="https://gitlab.com/" />
+
+<project path="packages/apps/openeuicc" name="packages_apps_openeuicc" remote="naz" revision="main" />
+<project path="vendor/hardware_overlay" name="vendor_hardware_overlay" remote="phh" revision="pie" />
+<project path="device/phh/treble" name="device_phh_treble" remote="naz" revision="android-13.0" />
+<project path="vendor/vndk-tests" name="vendor_vndk-tests" remote="phh" revision="master" />
+<project path="vendor/interfaces" name="vendor_interfaces" remote="phh" revision="android-11.0" />
+<project path="vendor/lptools" name="vendor_lptools" remote="phh" revision="master" />
+<project name="arrowos-project/android_vendor_gapps" path="vendor/gapps" remote="gitlab" revision="arrow-13.0" />
+<project path="vendor/magisk" name="vendor_magisk" remote="phh" revision="android-10.0" />
+
+</manifest>
