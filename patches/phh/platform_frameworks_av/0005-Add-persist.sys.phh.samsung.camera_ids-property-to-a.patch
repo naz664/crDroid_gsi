@@ -1,7 +1,7 @@
-From c8a3d642465a97ca862de7840ddc7522ed13037d Mon Sep 17 00:00:00 2001
+From cf055ab469e21ebee0d0386fb8009f8fd680822e Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Thu, 14 May 2020 19:54:55 +0200
-Subject: [PATCH 05/23] Add persist.sys.phh.samsung.camera_ids property to
+Subject: [PATCH 05/24] Add persist.sys.phh.samsung.camera_ids property to
  access hidden Samsung cameras
 
 Change-Id: I2c7bf535272acc28ed2277e96c78ddd28a0b4593
@@ -11,10 +11,10 @@ Change-Id: I2c7bf535272acc28ed2277e96c78ddd28a0b4593
  2 files changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/services/camera/libcameraservice/Android.bp b/services/camera/libcameraservice/Android.bp
-index 26562e0426..e940c33845 100644
+index 7de2ff40b9..5678f5455c 100644
 --- a/services/camera/libcameraservice/Android.bp
 +++ b/services/camera/libcameraservice/Android.bp
-@@ -154,6 +154,7 @@ cc_library_shared {
+@@ -159,6 +159,7 @@ cc_library_shared {
          "android.hardware.camera.device@3.5",
          "android.hardware.camera.device@3.6",
          "android.hardware.camera.device@3.7",
@@ -23,7 +23,7 @@ index 26562e0426..e940c33845 100644
      ],
  
 diff --git a/services/camera/libcameraservice/common/CameraProviderManager.cpp b/services/camera/libcameraservice/common/CameraProviderManager.cpp
-index 0cce2cad91..52c78a4695 100644
+index b31efadebc..d1ab053e93 100644
 --- a/services/camera/libcameraservice/common/CameraProviderManager.cpp
 +++ b/services/camera/libcameraservice/common/CameraProviderManager.cpp
 @@ -21,6 +21,7 @@
@@ -34,7 +34,7 @@ index 0cce2cad91..52c78a4695 100644
  
  #include <algorithm>
  #include <chrono>
-@@ -1380,6 +1381,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1385,6 +1386,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
              mMinorVersion = 6;
          }
      }
@@ -42,7 +42,7 @@ index 0cce2cad91..52c78a4695 100644
      // We need to check again since cast2_6.isOk() succeeds even if the provider
      // version isn't actually 2.6.
      if (interface2_6 == nullptr){
-@@ -1416,6 +1418,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1421,6 +1423,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
          return mapToStatusT(status);
      }
  
@@ -52,7 +52,7 @@ index 0cce2cad91..52c78a4695 100644
      hardware::Return<bool> linked = interface->linkToDeath(this, /*cookie*/ mId);
      if (!linked.isOk()) {
          ALOGE("%s: Transaction error in linking to camera provider '%s' death: %s",
-@@ -1446,7 +1451,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1451,7 +1456,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
  
      // Get initial list of camera devices, if any
      std::vector<std::string> devices;
@@ -61,7 +61,7 @@ index 0cce2cad91..52c78a4695 100644
              Status idStatus,
              const hardware::hidl_vec<hardware::hidl_string>& cameraDeviceNames) {
          status = idStatus;
-@@ -1463,7 +1468,12 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1468,7 +1473,12 @@ status_t CameraProviderManager::ProviderInfo::initialize(
                      mProviderPublicCameraIds.push_back(id);
                  }
              }

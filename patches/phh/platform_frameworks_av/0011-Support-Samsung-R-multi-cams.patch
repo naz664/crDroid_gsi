@@ -1,7 +1,7 @@
-From abab867d1e0f291606e107bc951d89087524dad9 Mon Sep 17 00:00:00 2001
+From 0ef6358d53b7fed50c7e55e15d1cb98351d6a79a Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sat, 13 Mar 2021 14:20:03 -0500
-Subject: [PATCH 11/23] Support Samsung R multi-cams
+Subject: [PATCH 11/24] Support Samsung R multi-cams
 
 Change-Id: If46f385e8dd16185cbf37ab083e6a1242e1d1555
 ---
@@ -10,10 +10,10 @@ Change-Id: If46f385e8dd16185cbf37ab083e6a1242e1d1555
  2 files changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/services/camera/libcameraservice/Android.bp b/services/camera/libcameraservice/Android.bp
-index e940c33845..a2a2ad623e 100644
+index 5678f5455c..cfcd2ad192 100644
 --- a/services/camera/libcameraservice/Android.bp
 +++ b/services/camera/libcameraservice/Android.bp
-@@ -155,6 +155,7 @@ cc_library_shared {
+@@ -160,6 +160,7 @@ cc_library_shared {
          "android.hardware.camera.device@3.6",
          "android.hardware.camera.device@3.7",
          "vendor.samsung.hardware.camera.provider@3.0",
@@ -22,7 +22,7 @@ index e940c33845..a2a2ad623e 100644
      ],
  
 diff --git a/services/camera/libcameraservice/common/CameraProviderManager.cpp b/services/camera/libcameraservice/common/CameraProviderManager.cpp
-index 5158655d33..c873989b08 100644
+index 0701471c35..92b415d8ff 100644
 --- a/services/camera/libcameraservice/common/CameraProviderManager.cpp
 +++ b/services/camera/libcameraservice/common/CameraProviderManager.cpp
 @@ -22,6 +22,7 @@
@@ -33,7 +33,7 @@ index 5158655d33..c873989b08 100644
  
  #include <algorithm>
  #include <chrono>
-@@ -1421,7 +1422,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1426,7 +1427,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
      }
  
      auto samsungCast = vendor::samsung::hardware::camera::provider::V3_0::ISehCameraProvider::castFrom(interface);
@@ -43,7 +43,7 @@ index 5158655d33..c873989b08 100644
  
      hardware::Return<bool> linked = interface->linkToDeath(this, /*cookie*/ mId);
      if (!linked.isOk()) {
-@@ -1459,6 +1462,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1464,6 +1467,7 @@ status_t CameraProviderManager::ProviderInfo::initialize(
          status = idStatus;
          if (status == Status::OK) {
              for (auto& name : cameraDeviceNames) {
@@ -51,7 +51,7 @@ index 5158655d33..c873989b08 100644
                  uint16_t major, minor;
                  std::string type, id;
                  status_t res = parseDeviceName(name, &major, &minor, &type, &id);
-@@ -1472,7 +1476,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
+@@ -1477,7 +1481,9 @@ status_t CameraProviderManager::ProviderInfo::initialize(
              }
          } };
      hardware::Return<void> ret;

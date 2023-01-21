@@ -1,7 +1,7 @@
-From 5bd6c2771efe985f945be22f8855042ec8d36615 Mon Sep 17 00:00:00 2001
+From 20a1c638347d12b8d5bc244a80a7ca85aa1433b3 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 21 Dec 2020 20:19:11 +0100
-Subject: [PATCH 10/23] Make camera IDs filter-out optional
+Subject: [PATCH 10/24] Make camera IDs filter-out optional
 
 Nowadays most people have Camera 2 apps, and would like to have all
 cameras, rather than limit which cameras are available.
@@ -11,7 +11,7 @@ Add a property for that.
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/services/camera/libcameraservice/common/CameraProviderManager.cpp b/services/camera/libcameraservice/common/CameraProviderManager.cpp
-index 52c78a4695..5158655d33 100644
+index d1ab053e93..0701471c35 100644
 --- a/services/camera/libcameraservice/common/CameraProviderManager.cpp
 +++ b/services/camera/libcameraservice/common/CameraProviderManager.cpp
 @@ -183,7 +183,9 @@ std::vector<std::string> CameraProviderManager::getAPI1CompatibleCameraDeviceIds

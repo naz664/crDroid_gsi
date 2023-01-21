@@ -1,7 +1,7 @@
-From 84a17a2c0cd0ff029e62b8c8b0d66cbabcc20878 Mon Sep 17 00:00:00 2001
+From 6948f10b803709f7a75709bc964c17831a9b8f7a Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sat, 12 Mar 2022 18:07:43 -0500
-Subject: [PATCH 20/23] fixup! Not all sources in a route are valid. Dont
+Subject: [PATCH 20/24] fixup! Not all sources in a route are valid. Dont
  ignore the whole route because of one broken source
 
 ---

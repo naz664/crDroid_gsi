@@ -1,0 +1,98 @@
+From 92a0d236653d84fc8b7e1575e83fd9fbe324f4fe Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Fri, 20 Jan 2023 15:27:38 +0000
+Subject: [PATCH 2/2] Add Maintainer string Add ro.lineage.maintainer=<Name> on
+ dt props.
+
+---
+ res/values/strings.xml                        |  2 +
+ res/xml/firmware_version.xml                  |  8 ++++
+ ...LineageMaintainerPreferenceController.java | 46 +++++++++++++++++++
+ 3 files changed, 56 insertions(+)
+ create mode 100644 src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
+
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 96b5905062..3a1a00e33e 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -13648,4 +13648,6 @@
+     <string name="bluetooth_connect_access_dialog_negative">Don\u2019t connect</string>
+     <!-- Strings for Dialog connect button -->
+     <string name="bluetooth_connect_access_dialog_positive">Connect</string>
++    <!-- crDroid maintainer -->
++    <string name="maintainer">Maintainer</string>
+ </resources>
+diff --git a/res/xml/firmware_version.xml b/res/xml/firmware_version.xml
+index 38bd68e716..123b089204 100644
+--- a/res/xml/firmware_version.xml
++++ b/res/xml/firmware_version.xml
+@@ -52,6 +52,14 @@
+         settings:enableCopying="true"
+         settings:controller="com.android.settings.deviceinfo.firmwareversion.LineageVersionDetailPreferenceController"/>
+ 
++    <!-- crDroid maintainer -->
++    <Preference
++        android:key="maintainer"
++        android:title="@string/maintainer"
++        android:summary="@string/summary_placeholder"
++        settings:enableCopying="true"
++        settings:controller="com.android.settings.deviceinfo.lineage.LineageMaintainerPreferenceController"/>
++
+     <!-- Security patch -->
+     <Preference
+         android:key="security_key"
+diff --git a/src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java b/src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
+new file mode 100644
+index 0000000000..23d5f128d8
+--- /dev/null
++++ b/src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
+@@ -0,0 +1,46 @@
++/*
++ * Copyright (C) 2019 The LineageOS Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.settings.deviceinfo.lineage;
++
++import android.content.Context;
++import android.os.SystemProperties;
++import android.text.TextUtils;
++
++import androidx.preference.Preference;
++
++import com.android.settings.R;
++import com.android.settings.core.BasePreferenceController;
++
++public class LineageMaintainerPreferenceController extends BasePreferenceController {
++
++    private static final String TAG = "LineageMaintainerPreferenceController";
++    private static final String ROM_PROPERTY = "ro.lineage.maintainer";
++
++    public LineageMaintainerPreferenceController(Context context, String key) {
++        super(context, key);
++    }
++
++    public int getAvailabilityStatus() {
++        return AVAILABLE;
++    }
++
++    public CharSequence getSummary() {
++        String rom = SystemProperties.get(ROM_PROPERTY,
++                this.mContext.getString(R.string.device_info_default));
++        return rom;
++    }
++}
+-- 
+2.25.1
+

@@ -1,0 +1,32 @@
+From 588db10a8a9b6eb458eb88874c89a083aae3ad3a Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Sat, 21 Jan 2023 06:45:37 +0000
+Subject: [PATCH] Change color of FOD
+
+---
+ packages/SystemUI/res/values/lineage_config.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/res/values/lineage_config.xml b/packages/SystemUI/res/values/lineage_config.xml
+index 5832a7a7c76c..e3403f0b9f4f 100644
+--- a/packages/SystemUI/res/values/lineage_config.xml
++++ b/packages/SystemUI/res/values/lineage_config.xml
+@@ -26,13 +26,13 @@
+     <bool name="config_fingerprintWakeAndUnlock">true</bool>
+ 
+     <!-- Color of the UDFPS pressed view -->
+-    <color name="config_udfpsColor">#ffffffff</color>
++    <color name="config_udfpsColor">#00ff00</color>
+ 
+     <!-- HBM type of UDFPS overlay.
+             0 - GLOBAL HBM
+             1 - LOCAL HBM
+     -->
+-    <integer name="config_udfpsHbmType">1</integer>
++    <integer name="config_udfpsHbmType">0</integer>
+ 
+     <!-- Udfps HBM provider class name -->
+     <string name="config_udfpsHbmProviderComponent">com.android.systemui.biometrics.DummyUdfpsHbmProvider</string>
+-- 
+2.25.1
+

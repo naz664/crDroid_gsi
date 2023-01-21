@@ -1,0 +1,24 @@
+From 9abc190502b64ebcb1e77e245e2eb14ce7f0b49c Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Mon, 2 May 2022 18:02:25 -0400
+Subject: [PATCH 26/27] Switch FOD to WHITE
+
+---
+ .../src/com/android/systemui/biometrics/UdfpsSurfaceView.java    | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsSurfaceView.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsSurfaceView.java
+index 8839a3824020..62f66736e2cf 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsSurfaceView.java
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsSurfaceView.java
+@@ -87,6 +87,7 @@ public class UdfpsSurfaceView extends SurfaceView implements SurfaceHolder.Callb
+ 	} catch(Throwable t) {
+ 		Log.d("PHH", "Failed parsing color #" + colorStr, t);
+ 	}
++        mSensorPaint.setARGB(255, 255, 255, 255);
+         mSensorPaint.setStyle(Paint.Style.FILL);
+ 
+         mUdfpsIconPressed = context.getDrawable(R.drawable.udfps_icon_pressed);
+-- 
+2.25.1
+

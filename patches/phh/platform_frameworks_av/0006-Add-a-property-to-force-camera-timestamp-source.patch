@@ -1,7 +1,7 @@
-From ba8531becc9b9cb3acafd25ef99c30228120a932 Mon Sep 17 00:00:00 2001
+From ca8f324d2855d5d6fe5a72a2168da6a9553c7274 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Tue, 19 May 2020 14:01:14 +0200
-Subject: [PATCH 06/23] Add a property to force camera timestamp source
+Subject: [PATCH 06/24] Add a property to force camera timestamp source
 
 Some devices wrongly report their timesource
 Camera's timesource can either be CLOCK_MONOTONIC, or CLOCK_BOOTTIME
@@ -18,7 +18,7 @@ timestamp source.
  1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/services/camera/libcameraservice/device3/Camera3Device.cpp b/services/camera/libcameraservice/device3/Camera3Device.cpp
-index de418da6cc..6c2de0f088 100644
+index ffa894debe..26452c19e1 100644
 --- a/services/camera/libcameraservice/device3/Camera3Device.cpp
 +++ b/services/camera/libcameraservice/device3/Camera3Device.cpp
 @@ -347,8 +347,16 @@ status_t Camera3Device::initializeCommonLocked() {

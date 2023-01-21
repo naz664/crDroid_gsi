@@ -1,7 +1,7 @@
-From ddf03b6aeaa7d11294c4ab404d5cd50ba74cd966 Mon Sep 17 00:00:00 2001
+From 7dec960e1a628e27433a41a629a6c27905a8060a Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 11 Oct 2021 16:10:42 -0400
-Subject: [PATCH 18/23] Revert "Remove support for audio HAL V2 from the
+Subject: [PATCH 18/24] Revert "Remove support for audio HAL V2 from the
  framework"
 
 This reverts commit cbf517f837f7bf8a59f3ff8aa1e0e3e19612e251.

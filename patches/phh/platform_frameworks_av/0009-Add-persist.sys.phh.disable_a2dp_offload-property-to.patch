@@ -1,7 +1,7 @@
-From 294fd56f000ff05d3982c6a0342f85ab07f85a51 Mon Sep 17 00:00:00 2001
+From 5425b3bbee6984200a8c5c98d2f9bbb6d436b1a2 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 25 May 2020 21:26:54 +0200
-Subject: [PATCH 09/23] Add persist.sys.phh.disable_a2dp_offload property to
+Subject: [PATCH 09/24] Add persist.sys.phh.disable_a2dp_offload property to
  force a2dp offload
 
 Change-Id: Id474540c33c594cc4010a1a398d82bff8aadaeea
@@ -12,10 +12,10 @@ Change-Id: Id474540c33c594cc4010a1a398d82bff8aadaeea
  3 files changed, 197 insertions(+), 7 deletions(-)
 
 diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
-index 1e64538d89..2923575327 100644
+index 8c9888ab47..917b4f0432 100644
 --- a/media/libstagefright/ACodec.cpp
 +++ b/media/libstagefright/ACodec.cpp
-@@ -1183,6 +1183,9 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+@@ -1184,6 +1184,9 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
          return err;
      }
  
@@ -25,7 +25,7 @@ index 1e64538d89..2923575327 100644
      // FIXME: assume that surface is controlled by app (native window
      // returns the number for the case when surface is not controlled by app)
      // FIXME2: This means that minUndeqeueudBufs can be 1 larger than reported
-@@ -1195,22 +1198,29 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+@@ -1196,22 +1199,29 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
      // 2. try to allocate two (2) additional buffers to reduce starvation from
      //    the consumer
      //    plus an extra buffer to account for incorrect minUndequeuedBufs
@@ -309,7 +309,7 @@ index abc54ccc24..c6db471c8c 100644
      if (status != OK) config->clear();
      return status;
 diff --git a/services/audiopolicy/enginedefault/src/Engine.cpp b/services/audiopolicy/enginedefault/src/Engine.cpp
-index c73c17d1e4..314de7889b 100644
+index 316a561f7b..0bd3a3d16a 100644
 --- a/services/audiopolicy/enginedefault/src/Engine.cpp
 +++ b/services/audiopolicy/enginedefault/src/Engine.cpp
 @@ -52,7 +52,7 @@ static const std::vector<legacy_strategy_map>& getLegacyStrategy() {
