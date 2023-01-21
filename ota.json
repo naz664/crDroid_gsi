@@ -1,0 +1,21 @@
+{
+  "version": "v-Jan2023",
+  "date": "1673686522",
+  "variants": [
+    {
+      "name": "treble_arm64_bvN",
+      "size": "959459328",
+      "url": "https://sourceforge.net/projects/gsi-projects/files/A12.1/crDroid-8.10/v-8.13/21012023/crDroid-8.13-arm64_bvN-Unofficial.img.xz"
+    },
+    {
+      "name": "treble_arm64_bgN",
+      "size": "1249729320",
+      "url": "https://sourceforge.net/projects/gsi-projects/files/A12.1/crDroid-8.10/v-8.13/21012023/crDroid-8.13-arm64_bgN-Unofficial.img.xz"
+    },
+    {
+      "name": "treble_arm64_bgN-slim",
+      "size": "1130878236",
+      "url": "https://sourceforge.net/projects/gsi-projects/files/A12.1/crDroid-8.10/v-8.13/21012023/crDroid-8.13-arm64_bgN-slim-Unofficial.img.xz"
+    }
+  ]
+}
