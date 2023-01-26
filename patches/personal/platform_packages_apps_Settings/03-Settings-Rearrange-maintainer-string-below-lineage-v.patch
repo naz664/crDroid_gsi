@@ -1,0 +1,46 @@
+From e80cb09bdc47c8d9673afd9f375763fc6cedb342 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Thu, 26 Jan 2023 11:54:13 +0000
+Subject: [PATCH] Settings: Rearrange maintainer string below lineage version
+
+---
+ res/xml/firmware_version.xml | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/res/xml/firmware_version.xml b/res/xml/firmware_version.xml
+index 0ab86a1ce3..123b089204 100644
+--- a/res/xml/firmware_version.xml
++++ b/res/xml/firmware_version.xml
+@@ -44,14 +44,6 @@
+         settings:searchable="false"
+         settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionDetailPreferenceController"/>
+ 
+-    <!-- crDroid maintainer -->
+-    <Preference
+-        android:key="maintainer"
+-        android:title="@string/maintainer"
+-        android:summary="@string/summary_placeholder"
+-        settings:enableCopying="true"
+-        settings:controller="com.android.settings.deviceinfo.lineage.LineageMaintainerPreferenceController"/>
+-
+     <!-- Lineage version -->
+     <Preference
+         android:key="lineage_version"
+@@ -60,6 +52,14 @@
+         settings:enableCopying="true"
+         settings:controller="com.android.settings.deviceinfo.firmwareversion.LineageVersionDetailPreferenceController"/>
+ 
++    <!-- crDroid maintainer -->
++    <Preference
++        android:key="maintainer"
++        android:title="@string/maintainer"
++        android:summary="@string/summary_placeholder"
++        settings:enableCopying="true"
++        settings:controller="com.android.settings.deviceinfo.lineage.LineageMaintainerPreferenceController"/>
++
+     <!-- Security patch -->
+     <Preference
+         android:key="security_key"
+-- 
+2.25.1
+
