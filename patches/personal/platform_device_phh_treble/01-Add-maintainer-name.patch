@@ -1,0 +1,22 @@
+From 204c22a9d647dea6a8e41156f9062bee19287d48 Mon Sep 17 00:00:00 2001
+From: naz664 <nazimnavas145@gmail.com>
+Date: Fri, 17 Feb 2023 10:05:21 +0000
+Subject: [PATCH] Add maintainer name
+
+---
+ system.prop | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/system.prop b/system.prop
+index db7c86d..a0df5a2 100644
+--- a/system.prop
++++ b/system.prop
+@@ -1,4 +1,5 @@
+ ro.adb.secure=0
++ro.lineage.maintainer=Nazim
+ #Some devices have sdcardfs kernel panicing on 8.0
+ #Disable for everyone for the moment
+ ro.sys.sdcardfs=0
+-- 
+2.25.1
+

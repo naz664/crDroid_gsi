@@ -1,0 +1,38 @@
+From 6869c4048ddf1307a20a4d2c600350b7e3f28903 Mon Sep 17 00:00:00 2001
+From: ItsLynix <lynixfoxxo@gmail.com>
+Date: Thu, 12 Jan 2023 15:01:21 +0000
+Subject: [PATCH] SystemUI: Implement alternate backlight/panel brightness path
+ for UDFPS
+
+---
+ .../com/android/systemui/biometrics/UdfpsView.kt  | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
+index dd817a3d..cdca2b82 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
+@@ -248,8 +248,19 @@ Log.d("PHH", "Surface destroyed!")
+         mySurfaceView.setVisibility(VISIBLE)
+         Log.d("PHH", "setting surface visible!")
+ 
+-        val brightness = File("/sys/class/backlight/panel0-backlight/brightness").readText().toDouble()
+-        val maxBrightness = File("/sys/class/backlight/panel0-backlight/max_brightness").readText().toDouble()
++	val brightnessFile = File("/sys/class/backlight/panel/brightness/")
++	val maxBrightnessFile = File("/sys/class/backlight/panel/max_brightness/")
++	
++	var brightness: Double = 0.0
++	var maxBrightness: Double = 0.0
++
++        if (brightnessFile.exists() && maxBrightnessFile.exists()) {
++	    brightness = brightnessFile.readText().toDouble()
++	    maxBrightness = maxBrightnessFile.readText().toDouble()
++	} else {
++	    brightness = File("/sys/class/backlight/panel0-backlight/brightness").readText().toDouble()
++	    maxBrightness = File("/sys/class/backlight/panel0-backlight/max_brightness").readText().toDouble()
++	}
+ 
+         // Assume HBM is max brightness
+         val dim = 1.0 - Math.pow( (brightness / maxBrightness), 1/2.3);
+-- 
+2.34.1
