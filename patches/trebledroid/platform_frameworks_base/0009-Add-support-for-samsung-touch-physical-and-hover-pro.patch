@@ -1,7 +1,7 @@
-From 5886c152b91d1ee3381a33d1895555dfb70a381a Mon Sep 17 00:00:00 2001
+From 81b007d0871c25d6e76c0ef34aced2dbb13f39ff Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Mon, 12 Aug 2019 23:08:26 +0200
-Subject: [PATCH 23/50] Add support for samsung touch, physical and hover
+Subject: [PATCH 09/34] Add support for samsung touch, physical and hover
  proximity sensor as fallback to real proximity sensor
 
 Change-Id: I7a0f8b4665c802140d19197d850b77b2a7ac1865
@@ -10,10 +10,10 @@ Change-Id: I7a0f8b4665c802140d19197d850b77b2a7ac1865
  1 file changed, 35 insertions(+)
 
 diff --git a/services/core/java/com/android/server/display/DisplayPowerController.java b/services/core/java/com/android/server/display/DisplayPowerController.java
-index c0ec820fd225..e4747162c249 100644
+index d6432a7741a7..c7b0a4a89008 100644
 --- a/services/core/java/com/android/server/display/DisplayPowerController.java
 +++ b/services/core/java/com/android/server/display/DisplayPowerController.java
-@@ -2106,6 +2106,27 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
+@@ -2209,6 +2209,27 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
                  ? Sensor.TYPE_PROXIMITY : SensorUtils.NO_FALLBACK;
          mProximitySensor = SensorUtils.findSensor(mSensorManager, proxSensor.type, proxSensor.name,
                  fallbackType);
@@ -41,7 +41,7 @@ index c0ec820fd225..e4747162c249 100644
          if (mProximitySensor != null) {
              mProximityThreshold = Math.min(mProximitySensor.getMaximumRange(),
                      TYPICAL_PROXIMITY_THRESHOLD);
-@@ -3149,6 +3170,20 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
+@@ -3269,6 +3290,20 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
          public void onSensorChanged(SensorEvent event) {
              if (mProximitySensorEnabled) {
                  final long time = SystemClock.uptimeMillis();

@@ -1,4 +1,4 @@
-From 6158ead8cb94ed94e13e7e0ffe856bedf614d33f Mon Sep 17 00:00:00 2001
+From b6f19ce441c0b76c3764e63ba8e5860ad38baeed Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Thu, 14 May 2020 19:54:55 +0200
 Subject: [PATCH 09/26] Add persist.sys.phh.samsung.camera_ids property to
@@ -11,10 +11,10 @@ Change-Id: I2c7bf535272acc28ed2277e96c78ddd28a0b4593
  2 files changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/services/camera/libcameraservice/Android.bp b/services/camera/libcameraservice/Android.bp
-index 981c56942c..7c4e4d9bcd 100644
+index af9b00d902..01f17c2285 100644
 --- a/services/camera/libcameraservice/Android.bp
 +++ b/services/camera/libcameraservice/Android.bp
-@@ -164,6 +164,7 @@ cc_library_shared {
+@@ -170,6 +170,7 @@ cc_library_shared {
          "android.hardware.camera.device@3.6",
          "android.hardware.camera.device@3.7",
          "android.hardware.camera.device-V1-ndk",
@@ -23,7 +23,7 @@ index 981c56942c..7c4e4d9bcd 100644
      ],
  
 diff --git a/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp b/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
-index d60565fb68..b02cf26445 100644
+index 1df6ec4449..ac579b4f7d 100644
 --- a/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
 +++ b/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
 @@ -27,6 +27,7 @@

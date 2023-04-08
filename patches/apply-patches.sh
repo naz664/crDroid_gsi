@@ -71,5 +71,3 @@ for path_personal in $(cd $personal; echo *); do
 
 	popd
 done
-
-rm -rf $1/patches

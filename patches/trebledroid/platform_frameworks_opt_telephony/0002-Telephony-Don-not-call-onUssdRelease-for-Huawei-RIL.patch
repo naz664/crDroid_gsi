@@ -1,7 +1,7 @@
-From 10a7fb1c343ec1d2dc940915508873cb4e8a9470 Mon Sep 17 00:00:00 2001
+From dc2ab54c18ece45287e3bebf26a652f2d497f40c Mon Sep 17 00:00:00 2001
 From: Artem Borisov <dedsa2002@gmail.com>
 Date: Sat, 10 Nov 2018 17:19:17 +0000
-Subject: [PATCH 06/10] Telephony: Don not call onUssdRelease for Huawei RIL
+Subject: [PATCH 2/7] Telephony: Don not call onUssdRelease for Huawei RIL
 
 Huawei RIL doesn't seem to work properly with USSD_MODE_NW_RELEASE,
 always releasing USSD when it should be finished instead.
@@ -13,7 +13,7 @@ Change-Id: I69faed1c51d4582834879975d6ab13daf7f48ad4
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/src/java/com/android/internal/telephony/GsmCdmaPhone.java b/src/java/com/android/internal/telephony/GsmCdmaPhone.java
-index 3390e8007c..3e28c07952 100644
+index 1da9f4bba1..9f5584c0bd 100644
 --- a/src/java/com/android/internal/telephony/GsmCdmaPhone.java
 +++ b/src/java/com/android/internal/telephony/GsmCdmaPhone.java
 @@ -2833,7 +2833,11 @@ public class GsmCdmaPhone extends Phone {

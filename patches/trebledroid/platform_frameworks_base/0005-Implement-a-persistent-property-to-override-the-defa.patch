@@ -1,18 +1,20 @@
-From 023b94ba81df955aef62212a1236d131a0382c9a Mon Sep 17 00:00:00 2001
-From: naz664 <nazimnavas145@gmail.com>
-Date: Sat, 12 Nov 2022 05:17:26 +0000
-Subject: [PATCH 18/50] Implement a persistent property to override the default
+From 9bb5a20811d3b7e4e4f75903aa4cf2ac97508a0b Mon Sep 17 00:00:00 2001
+From: Peter Cai <peter@typeblog.net>
+Date: Wed, 1 Jun 2022 16:56:20 -0400
+Subject: [PATCH 05/34] Implement a persistent property to override the default
+ primary camera (0)
 
+Change-Id: I49b45d00bf71d7932591b3516d49a680e1b6568b
 ---
  core/java/android/hardware/Camera.java                | 5 +++++
  core/java/android/hardware/camera2/CameraManager.java | 9 +++++++++
  2 files changed, 14 insertions(+)
 
 diff --git a/core/java/android/hardware/Camera.java b/core/java/android/hardware/Camera.java
-index 353cebb11da4..87a54b32aff3 100644
+index d58042c9aee2..2df9493b56d1 100644
 --- a/core/java/android/hardware/Camera.java
 +++ b/core/java/android/hardware/Camera.java
-@@ -480,6 +480,11 @@ public class Camera {
+@@ -493,6 +493,11 @@ public class Camera {
       * @see #open(int)
       */
      public static Camera open() {
@@ -25,10 +27,10 @@ index 353cebb11da4..87a54b32aff3 100644
          CameraInfo cameraInfo = new CameraInfo();
          for (int i = 0; i < numberOfCameras; i++) {
 diff --git a/core/java/android/hardware/camera2/CameraManager.java b/core/java/android/hardware/camera2/CameraManager.java
-index 72fb7ecfeb58..facce585819f 100644
+index 314aaf84ab13..4289fd6f506e 100644
 --- a/core/java/android/hardware/camera2/CameraManager.java
 +++ b/core/java/android/hardware/camera2/CameraManager.java
-@@ -1759,6 +1759,15 @@ public final class CameraManager {
+@@ -1794,6 +1794,15 @@ public final class CameraManager {
                          }
                      }});
  
