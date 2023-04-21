@@ -1,4 +1,4 @@
-From ddb256ced75dd7540bce6bd41719c4da75fde91b Mon Sep 17 00:00:00 2001
+From 71075ccf8c54416b576dbab91c4dc6523be295f5 Mon Sep 17 00:00:00 2001
 From: naz664 <nazimnavas145@gmail.com>
 Date: Mon, 26 Dec 2022 08:46:10 +0000
 Subject: [PATCH] Add Maintainer string
@@ -11,24 +11,24 @@ Subject: [PATCH] Add Maintainer string
  create mode 100644 src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
 
 diff --git a/res/values/strings.xml b/res/values/strings.xml
-index b3dfb81592..8371058080 100644
+index 4eaa5d1eb8..485371c107 100644
 --- a/res/values/strings.xml
 +++ b/res/values/strings.xml
-@@ -14404,4 +14404,7 @@
+@@ -14456,4 +14456,7 @@
+     <string name="bt_le_audio_scan_qr_code_scanner">To start listening, center the QR code below</string>
      <!-- [CHAR LIMIT=NONE] Hint for QR code process failure -->
      <string name="bt_le_audio_qr_code_is_not_valid_format">QR code isn\u0027t a valid format</string>
- 
++
 +    <!-- crDroid maintainer -->
 +    <string name="maintainer">Maintainer</string>
-+
  </resources>
 diff --git a/res/xml/firmware_version.xml b/res/xml/firmware_version.xml
-index 38bd68e716..0ab86a1ce3 100644
+index 38bd68e716..123b089204 100644
 --- a/res/xml/firmware_version.xml
 +++ b/res/xml/firmware_version.xml
-@@ -44,6 +44,14 @@
-         settings:searchable="false"
-         settings:controller="com.android.settings.deviceinfo.firmwareversion.FirmwareVersionDetailPreferenceController"/>
+@@ -52,6 +52,14 @@
+         settings:enableCopying="true"
+         settings:controller="com.android.settings.deviceinfo.firmwareversion.LineageVersionDetailPreferenceController"/>
  
 +    <!-- crDroid maintainer -->
 +    <Preference
@@ -38,9 +38,9 @@ index 38bd68e716..0ab86a1ce3 100644
 +        settings:enableCopying="true"
 +        settings:controller="com.android.settings.deviceinfo.lineage.LineageMaintainerPreferenceController"/>
 +
-     <!-- Lineage version -->
+     <!-- Security patch -->
      <Preference
-         android:key="lineage_version"
+         android:key="security_key"
 diff --git a/src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java b/src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
 new file mode 100644
 index 0000000000..23d5f128d8
