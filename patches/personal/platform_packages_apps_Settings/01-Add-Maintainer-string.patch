@@ -1,27 +1,28 @@
-From 71075ccf8c54416b576dbab91c4dc6523be295f5 Mon Sep 17 00:00:00 2001
+From f2c69360884372b9407e2a0c900826fed08eb1f2 Mon Sep 17 00:00:00 2001
 From: naz664 <nazimnavas145@gmail.com>
 Date: Mon, 26 Dec 2022 08:46:10 +0000
 Subject: [PATCH] Add Maintainer string
 
 ---
- res/values/strings.xml                        |  3 ++
+ res/values/strings.xml                        |  2 +
  res/xml/firmware_version.xml                  |  8 ++++
  ...LineageMaintainerPreferenceController.java | 46 +++++++++++++++++++
- 3 files changed, 57 insertions(+)
+ 3 files changed, 56 insertions(+)
  create mode 100644 src/com/android/settings/deviceinfo/lineage/LineageMaintainerPreferenceController.java
 
 diff --git a/res/values/strings.xml b/res/values/strings.xml
-index 4eaa5d1eb8..485371c107 100644
+index f693a9db0c..9dd4f9b792 100644
 --- a/res/values/strings.xml
 +++ b/res/values/strings.xml
-@@ -14456,4 +14456,7 @@
-     <string name="bt_le_audio_scan_qr_code_scanner">To start listening, center the QR code below</string>
-     <!-- [CHAR LIMIT=NONE] Hint for QR code process failure -->
-     <string name="bt_le_audio_qr_code_is_not_valid_format">QR code isn\u0027t a valid format</string>
-+
+@@ -14,6 +14,8 @@
+      limitations under the License.
+ -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 +    <!-- crDroid maintainer -->
 +    <string name="maintainer">Maintainer</string>
- </resources>
+     <!-- Strings for Dialog yes button -->
+     <string name="yes">"Yes"</string>
+     <!-- Strings for Dialog no button -->
 diff --git a/res/xml/firmware_version.xml b/res/xml/firmware_version.xml
 index 38bd68e716..123b089204 100644
 --- a/res/xml/firmware_version.xml
@@ -94,5 +95,5 @@ index 0000000000..23d5f128d8
 +    }
 +}
 -- 
-2.25.1
+2.34.1
 
