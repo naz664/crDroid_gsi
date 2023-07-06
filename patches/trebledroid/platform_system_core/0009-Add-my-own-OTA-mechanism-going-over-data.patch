@@ -1,7 +1,7 @@
-From 1de6c5a49a327ef71ee22f86a408fe3cc09c47f2 Mon Sep 17 00:00:00 2001
+From 5c742dcc513accb3e64d9ff45111683dce2e64d6 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sat, 22 Jan 2022 14:34:45 -0500
-Subject: [PATCH 09/14] Add my own OTA mechanism going over /data
+Subject: [PATCH 09/17] Add my own OTA mechanism going over /data
 
 Change-Id: I9cacff2d761affa0376b4bb8ca63353a9d95b5de
 ---
@@ -132,5 +132,5 @@ index 6ee962513..13c804dba 100644
      boot_clock::time_point start_time = boot_clock::now();
  
 -- 
-2.25.1
+2.17.1
 

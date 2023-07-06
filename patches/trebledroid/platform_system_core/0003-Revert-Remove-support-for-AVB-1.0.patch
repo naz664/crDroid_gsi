@@ -1,7 +1,7 @@
-From 292cdd3a67ebb8c27d2f4c3132e50c268edd0be2 Mon Sep 17 00:00:00 2001
+From c300e457bce553ddf4693d6a4eeedf53f580c0cc Mon Sep 17 00:00:00 2001
 From: Alberto Ponces <ponces26@gmail.com>
 Date: Wed, 28 Sep 2022 17:04:03 +0100
-Subject: [PATCH 03/14] Revert "Remove support for AVB 1.0."
+Subject: [PATCH 03/17] Revert "Remove support for AVB 1.0."
 
 This reverts commit 21ef2310eb1ef4e61117b8a63741f3a9577a20c9.
 
@@ -929,5 +929,5 @@ index 52a7f7473..0a26abaa2 100644
    if (!any_changed) any_changed = overlayfs_setup(enable);
  
 -- 
-2.25.1
+2.17.1
 

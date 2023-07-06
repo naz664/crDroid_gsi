@@ -1,7 +1,7 @@
-From 4f9412f943cc261467289d24d24ee567cb31b505 Mon Sep 17 00:00:00 2001
+From 3bce9dbd39255126c2be7368e21d4c248ae8b923 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sat, 13 Mar 2021 14:20:03 -0500
-Subject: [PATCH 14/26] Support Samsung R multi-cams
+Subject: [PATCH 14/27] Support Samsung R multi-cams
 
 Change-Id: If46f385e8dd16185cbf37ab083e6a1242e1d1555
 ---
@@ -10,10 +10,10 @@ Change-Id: If46f385e8dd16185cbf37ab083e6a1242e1d1555
  2 files changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/services/camera/libcameraservice/Android.bp b/services/camera/libcameraservice/Android.bp
-index 01f17c2285..01ac0a7b22 100644
+index ca27f980cd..c703359fa9 100644
 --- a/services/camera/libcameraservice/Android.bp
 +++ b/services/camera/libcameraservice/Android.bp
-@@ -171,6 +171,7 @@ cc_library_shared {
+@@ -172,6 +172,7 @@ cc_library_shared {
          "android.hardware.camera.device@3.7",
          "android.hardware.camera.device-V1-ndk",
          "vendor.samsung.hardware.camera.provider@3.0",
@@ -22,7 +22,7 @@ index 01f17c2285..01ac0a7b22 100644
      ],
  
 diff --git a/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp b/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
-index ac579b4f7d..070c9aeeae 100644
+index 97b5c8b11a..ce452249d5 100644
 --- a/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
 +++ b/services/camera/libcameraservice/common/hidl/HidlProviderInfo.cpp
 @@ -28,6 +28,7 @@
@@ -63,5 +63,5 @@ index ac579b4f7d..070c9aeeae 100644
      else
          ret = interface->getCameraIdList(cb);
 -- 
-2.25.1
+2.17.1
 

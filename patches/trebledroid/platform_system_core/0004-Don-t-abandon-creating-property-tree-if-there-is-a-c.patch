@@ -1,7 +1,7 @@
-From 2192be5c43f793d3d7389614a16b92d24b6b17cb Mon Sep 17 00:00:00 2001
+From cbf4c70d207372433604e5e7e29ca6bdcd65af86 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 18 Oct 2020 18:14:47 +0200
-Subject: [PATCH 04/14] Don't abandon creating property tree if there is a
+Subject: [PATCH 04/17] Don't abandon creating property tree if there is a
  conflict, and hope for the best
 
 Change-Id: I194c815fdd58bfb84aaf7db02b8f0d00b4db21e8
@@ -31,5 +31,5 @@ index 803657ab8..ecdd0be20 100644
    }
  
 -- 
-2.25.1
+2.17.1
 

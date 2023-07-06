@@ -1,35 +1,37 @@
-From 0b18289dbc4dc6da6bb0c76dab92ca3d6971322d Mon Sep 17 00:00:00 2001
+From 96f1662f0a5b4ea2477388ad38b1ad64c83a1e5b Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 18 Dec 2022 18:17:30 -0500
-Subject: [PATCH] FOD support for Samsung and Asus
+Subject: [PATCH 09/10] FOD support for Samsung and Asus
 
 ---
- libs/gui/BLASTBufferQueue.cpp                 | 20 ++++++++++++++--
+ libs/gui/BLASTBufferQueue.cpp                 | 19 +++++++++++++--
  libs/ui/Gralloc2.cpp                          |  1 -
  libs/ui/Gralloc3.cpp                          |  1 -
  libs/ui/Gralloc4.cpp                          |  1 -
- services/surfaceflinger/BufferQueueLayer.cpp  |  1 +
+ services/surfaceflinger/BufferQueueLayer.cpp  |  2 +-
  .../CompositionEngine/src/OutputLayer.cpp     | 24 +++++++++++++++++++
  .../DisplayHardware/AidlComposerHal.cpp       |  7 ++++++
  .../DisplayHardware/AidlComposerHal.h         |  2 ++
  .../DisplayHardware/ComposerHal.h             |  3 +++
  .../surfaceflinger/DisplayHardware/HWC2.cpp   |  8 +++++++
- .../surfaceflinger/DisplayHardware/HWC2.h     |  5 ++++
+ .../surfaceflinger/DisplayHardware/HWC2.h     |  6 +++++
  .../DisplayHardware/HidlComposerHal.cpp       |  7 ++++++
  .../DisplayHardware/HidlComposerHal.h         |  2 ++
- 13 files changed, 77 insertions(+), 5 deletions(-)
+ 13 files changed, 77 insertions(+), 6 deletions(-)
 
 diff --git a/libs/gui/BLASTBufferQueue.cpp b/libs/gui/BLASTBufferQueue.cpp
-index c8c143f68f..82bd8b6476 100644
+index f674ad5282..e9d359f16e 100644
 --- a/libs/gui/BLASTBufferQueue.cpp
 +++ b/libs/gui/BLASTBufferQueue.cpp
-@@ -33,11 +33,20 @@
+@@ -33,6 +33,7 @@
  #include <utils/Trace.h>
  
  #include <private/gui/ComposerService.h>
 +#include <cutils/properties.h>
  
- #include <chrono>
+ #include <binder/IServiceManager.h>
+ #include <pthread.h>
+@@ -41,6 +42,14 @@
  
  using namespace std::chrono_literals;
  
@@ -44,7 +46,7 @@ index c8c143f68f..82bd8b6476 100644
  namespace {
  inline const char* boolToString(bool b) {
      return b ? "true" : "false";
-@@ -147,9 +156,16 @@ BLASTBufferQueue::BLASTBufferQueue(const std::string& name, bool updateDestinati
+@@ -193,9 +202,15 @@ BLASTBufferQueue::BLASTBufferQueue(const std::string& name, bool updateDestinati
  
      // safe default, most producers are expected to override this
      mProducer->setMaxDequeuedBufferCount(2);
@@ -55,11 +57,10 @@ index c8c143f68f..82bd8b6476 100644
 +    if(sSamsungFod && name.find("SurfaceView[UdfpsControllerOverlay]") != std::string::npos) {
 +           usage |= 0x400000000LL;
 +    }
-+
      mBufferItemConsumer = new BLASTBufferItemConsumer(mConsumer,
 -                                                      GraphicBuffer::USAGE_HW_COMPOSER |
 -                                                              GraphicBuffer::USAGE_HW_TEXTURE,
-+            usage,
++                                                      usage,
                                                        1, false, this);
      static int32_t id = 0;
      mName = name + "#" + std::to_string(id);
@@ -88,10 +89,10 @@ index 194cbdf161..661ecc62a2 100644
  
      // Gralloc3 implementations never understand non-BLOB with GPU_DATA_BUFFER
 diff --git a/libs/ui/Gralloc4.cpp b/libs/ui/Gralloc4.cpp
-index 63f7d31b05..562e383919 100644
+index b456ca89b3..45ae07cafc 100644
 --- a/libs/ui/Gralloc4.cpp
 +++ b/libs/ui/Gralloc4.cpp
-@@ -127,7 +127,6 @@ static status_t validateBufferDescriptorInfo(IMapper::BufferDescriptorInfo* desc
+@@ -129,7 +129,6 @@ static status_t validateBufferDescriptorInfo(IMapper::BufferDescriptorInfo* desc
      if (descriptorInfo->usage & ~validUsageBits) {
          ALOGE("buffer descriptor contains invalid usage bits 0x%" PRIx64,
                descriptorInfo->usage & ~validUsageBits);
@@ -100,17 +101,18 @@ index 63f7d31b05..562e383919 100644
  
      // Combinations that are only allowed with gralloc 4.1.
 diff --git a/services/surfaceflinger/BufferQueueLayer.cpp b/services/surfaceflinger/BufferQueueLayer.cpp
-index bee4de32a6..4992b8374d 100644
+index bee4de32a6..a0cedc0b56 100644
 --- a/services/surfaceflinger/BufferQueueLayer.cpp
 +++ b/services/surfaceflinger/BufferQueueLayer.cpp
-@@ -472,6 +472,7 @@ status_t BufferQueueLayer::setDefaultBufferProperties(uint32_t w, uint32_t h, Pi
+@@ -472,7 +472,7 @@ status_t BufferQueueLayer::setDefaultBufferProperties(uint32_t w, uint32_t h, Pi
      setDefaultBufferSize(w, h);
      mConsumer->setDefaultBufferFormat(format);
      mConsumer->setConsumerUsageBits(getEffectiveUsage(0));
+-
 +    ALOGE("bufferqueuelayer -- name %s", mName.c_str());
- 
      return NO_ERROR;
  }
+ 
 diff --git a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp b/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
 index 2129dfed29..9b0a117a3f 100644
 --- a/services/surfaceflinger/CompositionEngine/src/OutputLayer.cpp
@@ -161,10 +163,10 @@ index 2129dfed29..9b0a117a3f 100644
            displayFrame.right, displayFrame.bottom);
  
 diff --git a/services/surfaceflinger/DisplayHardware/AidlComposerHal.cpp b/services/surfaceflinger/DisplayHardware/AidlComposerHal.cpp
-index 79dcd159d3..922bd8c364 100644
+index fb5f0cb30f..252d9e8165 100644
 --- a/services/surfaceflinger/DisplayHardware/AidlComposerHal.cpp
 +++ b/services/surfaceflinger/DisplayHardware/AidlComposerHal.cpp
-@@ -1126,5 +1126,12 @@ Error AidlComposer::getPhysicalDisplayOrientation(Display displayId,
+@@ -1128,5 +1128,12 @@ Error AidlComposer::getPhysicalDisplayOrientation(Display displayId,
      return Error::NONE;
  }
  
@@ -191,7 +193,7 @@ index 18d2242c7e..8ebca826a4 100644
      // Many public functions above simply write a command into the command
      // queue to batch the calls.  validateDisplay and presentDisplay will call
 diff --git a/services/surfaceflinger/DisplayHardware/ComposerHal.h b/services/surfaceflinger/DisplayHardware/ComposerHal.h
-index d266d942fb..b81d01e6d8 100644
+index d266d942fb..743587925d 100644
 --- a/services/surfaceflinger/DisplayHardware/ComposerHal.h
 +++ b/services/surfaceflinger/DisplayHardware/ComposerHal.h
 @@ -281,6 +281,9 @@ public:
@@ -199,16 +201,16 @@ index d266d942fb..b81d01e6d8 100644
      virtual Error getPhysicalDisplayOrientation(Display displayId,
                                                  AidlTransform* outDisplayOrientation) = 0;
 +
-+    // Proprietary extensions
++   // Proprietary extensions
 +    virtual Error setLayerClass(Display display, Layer layer, uint32_t layerClass) = 0;
  };
  
  } // namespace Hwc2
 diff --git a/services/surfaceflinger/DisplayHardware/HWC2.cpp b/services/surfaceflinger/DisplayHardware/HWC2.cpp
-index c52e96d146..82f60516ae 100644
+index 8364ed9d28..e4e16d11d4 100644
 --- a/services/surfaceflinger/DisplayHardware/HWC2.cpp
 +++ b/services/surfaceflinger/DisplayHardware/HWC2.cpp
-@@ -988,6 +988,14 @@ Error Layer::setBlockingRegion(const Region& region) {
+@@ -987,6 +987,14 @@ Error Layer::setBlockingRegion(const Region& region) {
      return static_cast<Error>(intError);
  }
  
@@ -224,7 +226,7 @@ index c52e96d146..82f60516ae 100644
  } // namespace HWC2
  } // namespace android
 diff --git a/services/surfaceflinger/DisplayHardware/HWC2.h b/services/surfaceflinger/DisplayHardware/HWC2.h
-index 24aef9b73c..138d14456c 100644
+index 24aef9b73c..be5db5f674 100644
 --- a/services/surfaceflinger/DisplayHardware/HWC2.h
 +++ b/services/surfaceflinger/DisplayHardware/HWC2.h
 @@ -333,6 +333,9 @@ public:
@@ -237,12 +239,13 @@ index 24aef9b73c..138d14456c 100644
  };
  
  namespace impl {
-@@ -382,6 +385,8 @@ public:
+@@ -382,6 +385,9 @@ public:
      hal::Error setBrightness(float brightness) override;
      hal::Error setBlockingRegion(const android::Region& region) override;
  
 +    // Proprietary HAL
 +    hal::Error setLayerClass(uint32_t layerClass) override;
++
  private:
      // These are references to data owned by HWC2::Device, which will outlive
      // this HWC2::Layer, so these references are guaranteed to be valid for
@@ -278,5 +281,5 @@ index d0d3c2e6d7..c40986fae9 100644
      class CommandWriter : public CommandWriterBase {
      public:
 -- 
-2.25.1
+2.17.1
 

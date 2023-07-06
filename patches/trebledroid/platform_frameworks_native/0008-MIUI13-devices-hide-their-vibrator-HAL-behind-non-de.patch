@@ -1,8 +1,8 @@
-From bc9f3628ab56953eb09d99ed894008db4a2dbf14 Mon Sep 17 00:00:00 2001
+From 8bc7c8022372b01f04b386228c904311fabbe00a Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Fri, 25 Mar 2022 05:37:56 -0400
-Subject: [PATCH 8/8] MIUI13 devices hide their vibrator HAL behind non-default
- name: "vibratorfeature"
+Subject: [PATCH 08/10] MIUI13 devices hide their vibrator HAL behind
+ non-default name: "vibratorfeature"
 
 ---
  services/vibratorservice/VibratorHalController.cpp | 6 ++++++
@@ -26,5 +26,5 @@ index c1795f5c32..345016efd6 100644
      if (halV1_0 == nullptr) {
          ALOGV("Vibrator HAL service not available.");
 -- 
-2.25.1
+2.17.1
 

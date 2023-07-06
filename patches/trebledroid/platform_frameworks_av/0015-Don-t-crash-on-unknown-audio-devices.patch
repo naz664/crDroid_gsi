@@ -1,7 +1,7 @@
-From d46c56665c5e010ba88ee34a42077b0fdcb3b095 Mon Sep 17 00:00:00 2001
+From a23c805c132621b973f10d38e8f2860e2b226f47 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Tue, 23 Mar 2021 00:16:42 +0100
-Subject: [PATCH 15/26] Don't crash on unknown audio devices
+Subject: [PATCH 15/27] Don't crash on unknown audio devices
 
 Change-Id: I2df8d88f742da6a84aa8888cdf19de25444de919
 ---
@@ -22,5 +22,5 @@ index 2bf5705512..78812b1098 100644
                                      "extension type",
                                      reinterpret_cast<const char*>(attachedDevice.get()));
 -- 
-2.25.1
+2.17.1
 

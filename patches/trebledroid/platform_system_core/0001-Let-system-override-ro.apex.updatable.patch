@@ -1,7 +1,7 @@
-From 952753ec2a5855b08dc2a784093b4cdd45c55308 Mon Sep 17 00:00:00 2001
+From 6d7d61aedcdfebd8b4267510b6b5c1fe424ff3a1 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 23 Feb 2022 17:37:47 -0500
-Subject: [PATCH 01/14] Let system override ro.apex.updatable
+Subject: [PATCH 01/17] Let system override ro.apex.updatable
 
 APEX are broken because of a kernel bug in Android 10 devices
 So we have system set ro.apex.updatable = false
@@ -32,5 +32,5 @@ index bd4708639..0ec822ecf 100644
                  LOG(ERROR) << "Do not have permissions to set '" << key << "' to '" << value
                             << "' in property file '" << filename << "': " << error;
 -- 
-2.25.1
+2.17.1
 
