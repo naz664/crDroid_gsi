@@ -1,0 +1,34 @@
+From 771612a08b792dd12cdec0d7faba0b2c3371bc8a Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Fri, 7 Oct 2022 03:32:01 +0000
+Subject: [PATCH] Allow encryptable fstab flag at any case
+
+ChonDoe: Simple re-do from Ponces patch due fails on bash (?
+
+With FDE drop "encryptable" fstab flags isn't allowed anymore 
+for any except adoptable storage. Unencrypted device with old DFE 
+will leads to bootloop due this, lets allow it again at any case.
+
+---
+ fs_mgr/fs_mgr_fstab.cpp | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/fs_mgr/fs_mgr_fstab.cpp b/fs_mgr/fs_mgr_fstab.cpp
+index 2933b61f8..cf5f0dda8 100644
+--- a/fs_mgr/fs_mgr_fstab.cpp
++++ b/fs_mgr/fs_mgr_fstab.cpp
+@@ -319,9 +319,8 @@ bool ParseFsMgrFlags(const std::string& flags, FstabEntry* entry) {
+     // reservation of a crypto footer) and thus never got removed.
+     if (entry->fs_mgr_flags.crypt && !entry->fs_mgr_flags.vold_managed &&
+         access("/system/bin/recovery", F_OK) != 0) {
+-        LERROR << "FDE is no longer supported; 'encryptable' can only be used for adoptable "
+-                  "storage";
+-        return false;
++        LWARNING << "IGNORED = FDE is no longer supported; 'encryptable' can only be used for adoptable storage";
++        return true;
+     }
+     return true;
+ }
+-- 
+2.34.1
+

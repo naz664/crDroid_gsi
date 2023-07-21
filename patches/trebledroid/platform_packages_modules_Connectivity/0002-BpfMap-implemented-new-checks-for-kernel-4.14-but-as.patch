@@ -1,9 +1,10 @@
-From 5dd5c5e23771db3f017cba2a81a145ccb7cf7de6 Mon Sep 17 00:00:00 2001
+From 516f4a9638dac7895ace937585b242a4c0b61c16 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 26 Oct 2022 18:10:46 -0400
-Subject: [PATCH 2/3] BpfMap() implemented new checks for kernel >=4.14 but as
- assert. Since we removed the asset but moved those checks into isOk, use isOk
- as well
+Subject: [PATCH 2/3] BpfMap() implemented new checks for kernel >=4.14 
+
+but as assert. Since we removed the asset but moved those checks into isOk,
+use isOk as well
 
 Change-Id: Ia7fa7494a2c320aa521e915d4926e8748d472689
 ---

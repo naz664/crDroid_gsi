@@ -1,10 +1,10 @@
-From 1d9b0e24120ff74866bd39dcba29b61f150b0f2c Mon Sep 17 00:00:00 2001
+From decca5cc3881636fadc994f6ab0c5bea127ef8f2 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Wed, 26 Oct 2022 18:02:18 -0400
-Subject: [PATCH] Restore back the behavior of isValid(): It is legal to have
- non-working BpfMap. Dont abort a whole process (system_server...) just
- because we cant access bpf map. Also add isOk to include the additional
- checks for newer kernel versions
+Subject: [PATCH] Restore back the behavior of isValid(): It is legal to have non-working BpfMap.
+
+Dont abort a whole process (system_server...) just because we cant access bpf map.
+Also add isOk to include the additional checks for newer kernel versions
 
 Change-Id: Ie7815c186400614f0c6b483c04aa8971af348380
 ---

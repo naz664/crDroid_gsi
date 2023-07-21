@@ -1,0 +1,24 @@
+From 5a09cfd89a6e836464028b8226e5836613d143cb Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Mon, 14 Nov 2022 23:44:41 +0000
+Subject: [PATCH] Nuke fuseblk sepolicy
+
+Leads to bootloop due alredy exist on vendor
+---
+ common/private/genfs_contexts | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/common/private/genfs_contexts b/common/private/genfs_contexts
+index c629305..a9930bb 100644
+--- a/common/private/genfs_contexts
++++ b/common/private/genfs_contexts
+@@ -1,5 +1,2 @@
+-ifelse(board_excludes_fuseblk_sepolicy, `true', ,
+-genfscon fuseblk / u:object_r:vfat:s0
+-)
+-
++# Placebo line to avoid patch fail
+ genfscon sysfs /devices/virtual/timed_output/vibrator u:object_r:sysfs_vibrator:s0
+-- 
+2.34.1
+
