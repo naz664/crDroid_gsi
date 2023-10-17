@@ -1,0 +1,31 @@
+From 7fdbfe272312df29db1bf00b5e7251c19537431f Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Wed, 3 May 2023 01:21:40 +0000
+Subject: [PATCH] Modify SYSBTA behaviour while is disabled
+
+There's a slightly chance than isn't work for some device,
+let's keep A2DP props as declared by default while is disabled
+---
+ phh-prop-handler.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/phh-prop-handler.sh b/phh-prop-handler.sh
+index 24056e4..78c0e3b 100644
+--- a/phh-prop-handler.sh
++++ b/phh-prop-handler.sh
+@@ -221,9 +221,9 @@ if [ "$1" == "persist.bluetooth.system_audio_hal.enabled" ]; then
+         setprop persist.bluetooth.a2dp_offload.disabled true
+         resetprop_phh ro.bluetooth.a2dp_offload.supported false
+     else
+-        resetprop_phh --delete persist.bluetooth.bluetooth_audio_hal.disabled
+-        resetprop_phh --delete persist.bluetooth.a2dp_offload.disabled
+-        resetprop_phh --delete ro.bluetooth.a2dp_offload.supported
++        resetprop_phh --delete persist.bluetooth.bluetooth_audio_hal.disabled
++        resetprop_phh persist.bluetooth.a2dp_offload.disabled
++        resetprop_phh ro.bluetooth.a2dp_offload.supported
+     fi
+     restartAudio
+     exit
+-- 
+2.34.1
+

@@ -1,0 +1,24 @@
+From 4a7c81ca9da035f9aa03c41fa087fbdc5d2d87af Mon Sep 17 00:00:00 2001
+From: ChonDoit <thphantomblog@gmail.com>
+Date: Fri, 11 Nov 2022 21:09:06 +0000
+Subject: [PATCH 3/5] Allow servicemanager to access hal_audio_sysbta
+
+---
+ sepolicy/hal_audio_sysbta.te | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/sepolicy/hal_audio_sysbta.te b/sepolicy/hal_audio_sysbta.te
+index d871ed3..e5c6087 100644
+--- a/sepolicy/hal_audio_sysbta.te
++++ b/sepolicy/hal_audio_sysbta.te
+@@ -8,3 +8,7 @@ hal_client_domain(hal_audio_sysbta, hal_allocator)
+ 
+ # allow audioserver to call hal_audio dump with its own fd to retrieve status
+ allow hal_audio_sysbta audioserver:fifo_file write;
++
++# Allow servicemanager to access hal_audio_sysbta
++allow servicemanager hal_audio_sysbta:dir r_dir_perms;
++allow servicemanager hal_audio_sysbta:file r_file_perms;
+-- 
+2.34.1
+
