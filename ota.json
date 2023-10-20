@@ -1,21 +1,21 @@
 {
-  "version": "crDroid 9.9 v2023.09.22",
-  "date": "1695374399",
+  "version": "crDroid 9.10 v2023.10.20",
+  "date": "1697804231",
   "variants": [
     {
       "name": "treble_arm64_bvN",
-      "size": "952905380",
-      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.09.22/crDroid-9.9-arm64_bvN-Unofficial.img.xz"
+      "size": "946311276",
+      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.10.20/crDroid-9.10-arm64_bvN-Unofficial.img.xz"
     },
     {
       "name": "treble_arm64_bgN",
-      "size": "1318160284",
-      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.09.22/crDroid-9.9-arm64_bgN-Unofficial.img.xz"
+      "size": "1356718496",
+      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.10.20/crDroid-9.10-arm64_bgN-Unofficial.img.xz"
     },
     {
       "name": "treble_arm64_bgN-slim",
-      "size": "1103374640",
-      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.09.22/crDroid-9.9-arm64_bgN-slim-Unofficial.img.xz"
+      "size": "1144021108",
+      "url": "https://github.com/naz664/crDroid_gsi/releases/tag/v2023.10.20/crDroid-9.10-arm64_bgN-slim-Unofficial.img.xz"
     }
   ]
 }
