@@ -19,20 +19,20 @@ To do that, run these commands:
 ### To initialize your local repository, run this command:
 
 ```bash
-   repo init -u https://github.com/crdroidandroid/android.git -b 13.0
+   repo init -u https://github.com/crdroidandroid/android.git -b 14.0
 ```
  
 
 ### Clone the Manifest to add necessary dependencies for gsi:
  
-    git clone https://github.com/naz664/treble_manifest.git .repo/local_manifests  -b 13
+    git clone https://github.com/naz664/treble_manifest.git .repo/local_manifests  -b 14
   
 
 
 ### Afterwards, sync the source by running this command:
 
 ```bash
-repo sync --force-sync --optimized-fetch --no-tags --no-clone-bundle --prune -j$(nproc --all)
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --optimized-fetch --prune
 ```
 
 
