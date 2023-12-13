@@ -1,0 +1,47 @@
+From 1b4343502d30465b04bbe2113ad7e8e1cae93f3e Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Mon, 2 May 2022 17:44:28 -0400
+Subject: [PATCH] Ignore cancelled fingerprint events, they are expected, plus
+ add more fingerprint enroll logs
+
+---
+ .../biometrics/fingerprint/FingerprintEnrollEnrolling.java   | 5 ++++-
+ .../biometrics/fingerprint/FingerprintEnrollFindSensor.java  | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollEnrolling.java b/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollEnrolling.java
+index f6d479c2b8..8b0a84f28f 100644
+--- a/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollEnrolling.java
++++ b/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollEnrolling.java
+@@ -765,6 +765,9 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
+ 
+     @Override
+     public void onEnrollmentError(int errMsgId, CharSequence errString) {
++        android.util.Log.e("PHH-Enroll", "heyo " + errMsgId + ", " + errString , new Exception());
++        if (errMsgId == 5) return;
++
+         onCancelEnrollment(errMsgId);
+         dismissTouchDialogIfSfps();
+     }
+@@ -1184,4 +1187,4 @@ public class FingerprintEnrollEnrolling extends BiometricsEnrollEnrolling {
+             return SettingsEnums.DIALOG_FINGERPRINT_ICON_TOUCH;
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollFindSensor.java b/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollFindSensor.java
+index 6b663ec07e..c32cf7821f 100644
+--- a/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollFindSensor.java
++++ b/src/com/android/settings/biometrics/fingerprint/FingerprintEnrollFindSensor.java
+@@ -341,6 +341,7 @@ public class FingerprintEnrollFindSensor extends BiometricEnrollBase implements
+ 
+     @Override
+     public void onEnrollmentError(int errMsgId, CharSequence errString) {
++	android.util.Log.e("PHH-Enroll", "heyo " + errMsgId + ", " + errString + ", " + mNextClicked, new Exception());
+         if (mNextClicked && errMsgId == FingerprintManager.FINGERPRINT_ERROR_CANCELED) {
+             proceedToEnrolling(false /* cancelEnrollment */);
+         } else {
+-- 
+2.34.1
+

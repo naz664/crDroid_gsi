@@ -1,0 +1,31 @@
+From adea8cbb79dbde2ca017e57a3e80ed16fab5ad21 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Fri, 6 Oct 2023 10:57:13 -0400
+Subject: [PATCH 36/45] Catch NPE in SystemUI
+
+No idea why it triggers, but it crashes SystemUI on boot for my TV
+device
+---
+ .../com/android/systemui/keyguard/KeyguardViewMediator.java | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java b/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
+index 1ae5d0a1a39d..a68be64f7747 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/KeyguardViewMediator.java
+@@ -3451,7 +3451,11 @@ public class KeyguardViewMediator implements CoreStartable, Dumpable,
+         Trace.beginSection("KeyguardViewMediator#handleMotifyStartedWakingUp");
+         synchronized (KeyguardViewMediator.this) {
+             if (DEBUG) Log.d(TAG, "handleNotifyWakingUp");
+-            mKeyguardViewControllerLazy.get().onStartedWakingUp();
++            try {
++                mKeyguardViewControllerLazy.get().onStartedWakingUp();
++            } catch(Throwable t) {
++                android.util.Log.e("PHH", "handleNotifyStartedWakingUp crashed bip", t);
++            }
+         }
+         Trace.endSection();
+     }
+-- 
+2.34.1
+

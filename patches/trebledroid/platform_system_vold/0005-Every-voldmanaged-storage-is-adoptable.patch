@@ -1,0 +1,25 @@
+From e47069dfc9692434e89fa79996d058563a788611 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Wed, 11 Mar 2020 14:02:35 +0100
+Subject: [PATCH 2/2] Every voldmanaged storage is adoptable
+
+---
+ main.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main.cpp b/main.cpp
+index e299476..d19f051 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -275,7 +275,7 @@ static int process_config(VolumeManager* vm, VoldConfigs* configs) {
+             int partnum = entry.partnum;
+             int flags = 0;
+ 
+-            if (entry.is_encryptable()) {
++            if (entry.is_encryptable() || true) {
+                 flags |= android::vold::Disk::Flags::kAdoptable;
+                 configs->has_adoptable = true;
+             }
+-- 
+2.34.1
+
