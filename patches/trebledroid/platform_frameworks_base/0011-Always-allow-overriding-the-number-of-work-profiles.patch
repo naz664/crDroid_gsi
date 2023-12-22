@@ -1,7 +1,7 @@
-From 6caeae5b4ae8eb82d2885851d59b80ce1bf28aa5 Mon Sep 17 00:00:00 2001
+From 9ffd420f636627528e51daaf3700232d01c1ec2d Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 5 Apr 2020 16:32:46 +0200
-Subject: [PATCH 11/45] Always allow overriding the number of work profiles
+Subject: [PATCH 1/5] Always allow overriding the number of work profiles
 
 Change-Id: I6eb09aa71663c6fbe7563e3038bffcabdba0ff6a
 ---
@@ -9,13 +9,13 @@ Change-Id: I6eb09aa71663c6fbe7563e3038bffcabdba0ff6a
  1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/services/core/java/com/android/server/pm/UserManagerService.java b/services/core/java/com/android/server/pm/UserManagerService.java
-index d2929aef8a63..af0a221bd3e3 100644
+index a5a99f920dbe..66c0cb954e13 100644
 --- a/services/core/java/com/android/server/pm/UserManagerService.java
 +++ b/services/core/java/com/android/server/pm/UserManagerService.java
-@@ -7346,12 +7346,8 @@ public class UserManagerService extends IUserManager.Stub {
-      */
-     private static int getMaxUsersOfTypePerParent(UserTypeDetails userTypeDetails) {
-         final int defaultMax = userTypeDetails.getMaxAllowedPerParent();
+@@ -7353,12 +7353,8 @@ public class UserManagerService extends IUserManager.Stub {
+             // Allow at least MULTIPLE_WORK_PROFILES_MAX managed profiles when property is set.
+             return Math.max(defaultMax, MULTIPLE_WORK_PROFILES_MAX);
+         }
 -        if (!Build.IS_DEBUGGABLE) {
 -            return defaultMax;
 -        } else {
