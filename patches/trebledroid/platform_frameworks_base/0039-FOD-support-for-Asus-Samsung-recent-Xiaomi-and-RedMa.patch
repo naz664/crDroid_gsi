@@ -1,7 +1,7 @@
-From a94d02de3a1cef6c70723a6828ebb94c3e426b22 Mon Sep 17 00:00:00 2001
+From 8fccfcc0dfae54ed8aff4d809c3356764a08e39b Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 18 Dec 2022 18:20:40 -0500
-Subject: [PATCH 4/5] FOD support for Asus, Samsung recent Xiaomi and RedMagic
+Subject: [PATCH 3/4] FOD support for Asus, Samsung recent Xiaomi and RedMagic
  8 devices
 
 Thanks Asus for providing a free device to make this support
@@ -644,7 +644,7 @@ index ef7fcc954590..4377dd7e70a7 100644
      }
  }
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index b07639ff923b..1113985b9430 100644
+index 7d2ffa0a9d2c..97e9c0ac1ce3 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
 @@ -192,6 +192,11 @@ java_library_static {

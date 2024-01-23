@@ -1,7 +1,7 @@
-From eea3bd63f9f7e73b69edd07c3a8a4e7beeb6b8d1 Mon Sep 17 00:00:00 2001
+From 65172c87a72e1d33abb88ba1b67d7dfe6b16619f Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 10 Dec 2023 18:04:49 -0500
-Subject: [PATCH 5/5] Add support for Samsung full brightness on their AIDL HAL
+Subject: [PATCH 4/4] Add support for Samsung full brightness on their AIDL HAL
 
 ---
  services/core/Android.bp                      |  4 ++
@@ -9,7 +9,7 @@ Subject: [PATCH 5/5] Add support for Samsung full brightness on their AIDL HAL
  2 files changed, 44 insertions(+)
 
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index 1113985b9430..c0849661df13 100644
+index 97e9c0ac1ce3..dc3fcc3b575a 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
 @@ -197,6 +197,10 @@ java_library_static {

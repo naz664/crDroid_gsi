@@ -1,7 +1,7 @@
-From 7d165eeed4ceda1dee1f7c516538ec3f1d859fb7 Mon Sep 17 00:00:00 2001
+From 86f1bdb368e4641a6ab9a0465cfb550d8587d320 Mon Sep 17 00:00:00 2001
 From: Alberto Ponces <ponces26@gmail.com>
 Date: Fri, 20 Oct 2023 09:11:55 +0000
-Subject: [PATCH 11/11] Revert "Removed IWLAN legacy mode support"
+Subject: [PATCH 8/8] Revert "Removed IWLAN legacy mode support"
 
 This reverts commit d8d3ed41243ba1fc4b5a5a2a6e30be3f6a404a9d.
 
@@ -14,7 +14,7 @@ Change-Id: I1fd5a803ea3b01f902ff14e1ee6225312b2d3206
  4 files changed, 190 insertions(+), 37 deletions(-)
 
 diff --git a/src/java/com/android/internal/telephony/ServiceStateTracker.java b/src/java/com/android/internal/telephony/ServiceStateTracker.java
-index 8a4967085f..a668285bbe 100644
+index e1dacd032d..dc121e4e16 100644
 --- a/src/java/com/android/internal/telephony/ServiceStateTracker.java
 +++ b/src/java/com/android/internal/telephony/ServiceStateTracker.java
 @@ -665,7 +665,7 @@ public class ServiceStateTracker extends Handler {
@@ -38,7 +38,7 @@ index 8a4967085f..a668285bbe 100644
          mLastCellInfoReqTime = 0;
          mLastCellInfoList = null;
          mStartedGprsRegCheck = false;
-@@ -3314,7 +3314,7 @@ public class ServiceStateTracker extends Handler {
+@@ -3315,7 +3315,7 @@ public class ServiceStateTracker extends Handler {
                  nri = mNewSS.getNetworkRegistrationInfo(
                          NetworkRegistrationInfo.DOMAIN_PS,
                          AccessNetworkConstants.TRANSPORT_TYPE_WLAN);
@@ -47,7 +47,7 @@ index 8a4967085f..a668285bbe 100644
                  // Add the IWLAN registration info back to service state.
                  if (nri != null) {
                      mNewSS.addNetworkRegistrationInfo(nri);
-@@ -3331,7 +3331,7 @@ public class ServiceStateTracker extends Handler {
+@@ -3332,7 +3332,7 @@ public class ServiceStateTracker extends Handler {
                  nri = mNewSS.getNetworkRegistrationInfo(
                          NetworkRegistrationInfo.DOMAIN_PS,
                          AccessNetworkConstants.TRANSPORT_TYPE_WLAN);
@@ -56,7 +56,7 @@ index 8a4967085f..a668285bbe 100644
                  // Add the IWLAN registration info back to service state.
                  if (nri != null) {
                      mNewSS.addNetworkRegistrationInfo(nri);
-@@ -3459,10 +3459,14 @@ public class ServiceStateTracker extends Handler {
+@@ -3460,10 +3460,14 @@ public class ServiceStateTracker extends Handler {
                  mSS.getState() == ServiceState.STATE_POWER_OFF
                          && mNewSS.getState() != ServiceState.STATE_POWER_OFF;
  
@@ -75,7 +75,7 @@ index 8a4967085f..a668285bbe 100644
          boolean anyDataRegChanged = false;
          boolean anyDataRatChanged = false;
          boolean hasAlphaRawChanged =
-@@ -3648,7 +3652,7 @@ public class ServiceStateTracker extends Handler {
+@@ -3649,7 +3653,7 @@ public class ServiceStateTracker extends Handler {
          ServiceState oldMergedSS = new ServiceState(mPhone.getServiceState());
          mSS = new ServiceState(mNewSS);
  
@@ -84,7 +84,7 @@ index 8a4967085f..a668285bbe 100644
  
          mCellIdentity = primaryCellIdentity;
          if (mSS.getState() == ServiceState.STATE_IN_SERVICE && primaryCellIdentity != null) {
-@@ -5517,7 +5521,8 @@ public class ServiceStateTracker extends Handler {
+@@ -5518,7 +5522,8 @@ public class ServiceStateTracker extends Handler {
      }
  
      /**
@@ -94,7 +94,7 @@ index 8a4967085f..a668285bbe 100644
       */
      private void processIwlanRegistrationInfo() {
          if (mCi.getRadioState() == TelephonyManager.RADIO_POWER_OFF) {
-@@ -5531,7 +5536,7 @@ public class ServiceStateTracker extends Handler {
+@@ -5532,7 +5537,7 @@ public class ServiceStateTracker extends Handler {
              }
              // operator info should be kept in SS
              String operator = mNewSS.getOperatorAlphaLong();
@@ -103,7 +103,7 @@ index 8a4967085f..a668285bbe 100644
              if (resetIwlanRatVal) {
                  mNewSS.setDataRegState(ServiceState.STATE_IN_SERVICE);
                  NetworkRegistrationInfo nri = new NetworkRegistrationInfo.Builder()
-@@ -5541,6 +5546,17 @@ public class ServiceStateTracker extends Handler {
+@@ -5542,6 +5547,17 @@ public class ServiceStateTracker extends Handler {
                          .setRegistrationState(NetworkRegistrationInfo.REGISTRATION_STATE_HOME)
                          .build();
                  mNewSS.addNetworkRegistrationInfo(nri);
@@ -121,7 +121,7 @@ index 8a4967085f..a668285bbe 100644
                  mNewSS.setOperatorAlphaLong(operator);
                  // Since it's in airplane mode, cellular must be out of service. The only possible
                  // transport for data to go through is the IWLAN transport. Setting this to true
-@@ -5550,6 +5566,31 @@ public class ServiceStateTracker extends Handler {
+@@ -5551,6 +5567,31 @@ public class ServiceStateTracker extends Handler {
              }
              return;
          }

@@ -1,0 +1,40 @@
+From 4a76c4467ee05dc720f70c8ea3246c7c32bc18b1 Mon Sep 17 00:00:00 2001
+From: Pierre-Hugues Husson <phh@phh.me>
+Date: Tue, 16 Jan 2024 10:30:57 -0500
+Subject: [PATCH 1/3] Keep capex when there are vendor apexes
+
+When disabling APEX on Linux < 5, we might break some vendor APEXes
+For instance Pixel 4a on Linux 4.14.
+If there is a vendor apex, enable APEX anyway.
+---
+ init/property_service.cpp | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/init/property_service.cpp b/init/property_service.cpp
+index 3cad1a6c5..d1fd254a4 100644
+--- a/init/property_service.cpp
++++ b/init/property_service.cpp
+@@ -700,8 +700,18 @@ static bool kernel_supports_capex() {
+     uname(&buf);
+     const char *where = buf.release;
+     int a = atoi(where);
+-    if(a <= 4) return false;
+-    return true;
++    if(a >= 5) return true;
++
++    // If there are vendor apexes, we most likely actually need them
++    auto dir = std::unique_ptr<DIR, decltype(&closedir)>{opendir("/vendor/apex"), closedir};
++    if (!dir) {
++        return false;
++    }
++    for (struct dirent* ent = readdir(dir.get()); ent; ent = readdir(dir.get())) {
++        if(strstr(ent->d_name, "apex")) return true;
++    }
++
++    return false;
+ }
+ 
+ /*
+-- 
+2.34.1
+
